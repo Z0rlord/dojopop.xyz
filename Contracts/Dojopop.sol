@@ -9,16 +9,16 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20Pe
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract Dojopop is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, PausableUpgradeable, OwnableUpgradeable, ERC20PermitUpgradeable, ERC20VotesUpgradeable {
+contract DojoPop is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, PausableUpgradeable, OwnableUpgradeable, ERC20PermitUpgradeable, ERC20VotesUpgradeable {
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
     function initialize() initializer public {
-        __ERC20_init("Dojopop", "DOJO");
+        __ERC20_init("DojoPop", "DPOP");
         __ERC20Burnable_init();
         __Pausable_init();
         __Ownable_init();
-        __ERC20Permit_init("Dojopop");
+        __ERC20Permit_init("DojoPop");
 
         _mint(msg.sender, 1000000000 * 10 ** decimals());
     }
