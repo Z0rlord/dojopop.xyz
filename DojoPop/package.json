@@ -1,5 +1,5 @@
 {
-  "name": "DojoPop",
+  "name": "dojopop",
   "version": "0.1.0",
   "description": "A dApp scaffold using Binance Smart Chain and Magic passwordless authentication.",
   "main": "index.html",

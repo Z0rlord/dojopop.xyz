@@ -1,0 +1,38 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn start
+
+PATH: 
+  /usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin:/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Users/z0rlord/.cargo/bin
+
+Yarn version: 
+  1.22.15
+
+Node version: 
+  14.18.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EISDIR: illegal operation on a directory, read
+
+npm manifest: 
+  {
+    "name": "dojopop",
+    "version": "0.1.0",
+    "description": "A dApp scaffold using Binance Smart Chain and Magic passwordless authentication.",
+    "main": "index.html",
+    "scripts": {
+      "start": "http-server -a localhost --proxy http://localhost:8080? -o /"
+    },
+    "dependencies": {
+      "@openzeppelin/contracts": "^4.3.2",
+      "http-server": "^13.0.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
