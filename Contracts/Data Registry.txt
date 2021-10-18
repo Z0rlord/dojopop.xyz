@@ -1,0 +1,133 @@
+DojoPop International Aikido Digital Dojo Passport Prototype Data Registry Model
+
+uses data fields from The Aikikai Foundation's Aikikai International Yudansha Book under Doshu Ueshiba Moriteru
+
+Aikikai Registration Number
+AF-
+
+First Name
+
+Last Name
+
+Signature
+
+住所
+ADDRESS
+
+Photo
+
+合气会会員音号
+AIKIKAI MEMBERSHIP NUMBER
+
+生年月日
+DATE OF BIRTH
+
+国籍
+NATIONALITY
+
+段
+DAN
+
+初段
+Shodan
+
+証書登錄番号
+Registered No.
+
+認可年月日
+Date
+
+弍段
+Nidan
+
+証書登錄番号
+Registered No.
+
+認可年月日
+Date
+
+参段
+Sandan
+
+証書登錄番号
+Registered No.
+
+認可年月日
+Date
+
+四段
+Yodan
+
+証書登錄番号
+Registered No.
+
+認可年月日
+Date
+
+五段
+Godan
+
+証書登錄番号
+Registered No.
+
+認可年月日
+Date
+
+六段
+Rokudan
+
+証書登錄番号
+Registered No.
+
+認可年月日
+Date
+
+七段
+Nanadan
+
+証書登錄番号
+Registered No.
+
+認可年月日
+Date
+
+証書登錄番号
+Registered No.
+
+認可年月日
+Date
+
+講習参加記錄
+RECORD OF COURSES PARTICIPATION
+
+認可年月日
+Date
+
+講習会名
+Organizer / Place
+
+指導者
+Instructor
+
+#CONTRIBUTION may be replaced with wallet function
+賛助費領收印
+CONTRIBUTION
+
+各 国記載欄
+NATIONAL INFORMATION
+
+所属組織名
+Name of Organization
+
+責任者氏名
+Name of Person
+in Charge
+
+所属道場名
+Name of Dojo
+
+指導者氏名
+Name of Instructor
+
+所在地
+Address
