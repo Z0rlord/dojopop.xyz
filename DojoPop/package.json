@@ -7,6 +7,7 @@
     "start": "http-server -a localhost --proxy http://localhost:8080? -o /"
   },
   "dependencies": {
-    "http-server": "^0.12.3"
+    "@openzeppelin/contracts": "^4.3.2",
+    "http-server": "^13.0.2"
   }
 }
