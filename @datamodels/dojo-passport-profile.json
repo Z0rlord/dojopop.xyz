@@ -87,8 +87,6 @@
       "items": {
         "type": "string",
         "maxLength": 140
-      }
-    }
   },
   "definitions": {
     "IPFSUrl": {
