@@ -1,13 +1,4 @@
-/**DojoPop International Aikido Digital Dojo Passport Prototype Data Registry Model
-
-#uses data fields from The Aikikai Foundation's Aikikai International Yudansha Book under Doshu Ueshiba Moriteru
-
-*/
-
- 
-
-   
-{
+   {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Aikikai Dojo Passport Profile",
   "type": "object",
@@ -68,8 +59,8 @@
         "type": "string",
         "pattern": "^[A-Z]{2}$",
         "maxItems": 5
-      }
-      "DanLevels": {
+      },
+      "danLevels": {
       "type": "array",
       "minItems": 1,
       "items": {
@@ -83,14 +74,14 @@
       "items": {
         "type": "string",
         "maxLength": 140
-      }
+      },
 
-     "RecordofCoursesParticipation": {
+     "recordofcoursesparticipation": {
       "type": "array",
       "items": {
         "type": "string",
         "maxLength": 140
-      }
+      },
        "OrganizerPlace": {
       "type": "array",
       "items": {
@@ -147,4 +138,5 @@
       "required": ["original"]
     }
   }
-},
+}
+    
