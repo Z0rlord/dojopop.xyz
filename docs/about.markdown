@@ -4,15 +4,8 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+The decentralized evolution in recording martial arts acheivement and lineage founded by Zorie Barber.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+In 1989 at the age of 19, Zorie moved to Kyoto, Japan and began practicing Aikido at the Osaka Tenshin Dojo and augmented his Aikido practice by studying Oriental Medicine and acupuncture at Emperor’s College in Santa Monica, California. He continues to practice with his mentor, Haruo Matsuoka Sensei. 
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
+KC3NOE CQ
