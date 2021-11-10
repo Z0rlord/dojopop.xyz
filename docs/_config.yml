@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: DojoPop.net - Dojo Proof of Practice and NFT rewards for martial artists.
+title: DojoPop.net - Dojo Proof of Practice and NFT rewards for Martial Artists.
 email: zrb@dojopop.net
 description: >- # this means to ignore newlines until "baseurl:"
   Dojo Proof of practice. The decentralized crypto eco-system for marital artists.
