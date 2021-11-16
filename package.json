@@ -1,0 +1,10 @@
+{
+  "name": "dojopop.net",
+  "version": "1.0.0",
+  "description": "dojo proof of practice",
+  "main": "index.js",
+  "repository": "https://github.com/Z0rlord/dojopop.net.git",
+  "author": "Zorie Barber <zorie@ghost-holdings.com>",
+  "license": "MIT",
+  "private": false
+}

@@ -11,17 +11,15 @@
    #BEE
    
    #LIQ+#RFI+#SHIB+#DOGE = #BEE
-
    #DOJOPOP features:
    3% fee auto add to the liquidity pool to locked forever when selling
    2% fee auto distribute to all holders
    I created a black hole so #Bee token will deflate itself in supply with every transaction
    50% Supply is burned at start.
    
-
  */
 
-pragma solidity ^0.8.2;
+pragma solidity ^0.6.12;
 // SPDX-License-Identifier: Unlicensed
 interface IERC20 {
 
@@ -474,14 +472,14 @@ contract Ownable is Context {
     function lock(uint256 time) public virtual onlyOwner {
         _previousOwner = _owner;
         _owner = address(0);
-        _lockTime = block.timestamp + time;
+        _lockTime = now + time;
         emit OwnershipTransferred(_owner, address(0));
     }
     
     //Unlocks the contract for owner when _lockTime is exceeds
     function unlock() public virtual {
         require(_previousOwner == msg.sender, "You don't have permission to unlock");
-        require(block.timestamp > _lockTime , "Contract is locked until 7 days");
+        require(now > _lockTime , "Contract is locked until 7 days");
         emit OwnershipTransferred(_owner, _previousOwner);
         _owner = _previousOwner;
     }
@@ -720,7 +718,7 @@ contract DOJOPOP is Context, IERC20, Ownable {
     uint256 private _tFeeTotal;
 
     string private _name = "DOJOPOP";
-    string private _symbol = "DOJO";
+    string private _symbol = "DOJOPOP";
     uint8 private _decimals = 9;
     
     uint256 public _taxFee = 5;
