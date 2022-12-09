@@ -7,4 +7,30 @@ Building Dapp for the tens of millions strong martial arts and community to trac
 
 When I was a teenager I moved to Osaka, Japan to study martial arts with the masters and I continiue to practice in Japan today.
 
-Road Map coming soon!
+ROADMAP
+
+Q1 2023 Tenshinryu Samurai sale
+
+ 
+
+10% We pay back our angel investors.
+
+20%  DOJOPOP - Dojo Proof of Practice application for Iphone and Android - is launched. Get paid to practice IRL with a SOUL BOUND, non-transferable certificate. Dojopop.xyz is the digital dojo layered over your real world practice that respects and protects lineage, privacy, and authenticity.
+
+30% We release THE 13th KLAN. (100 tokens held back from the sale) are airdropped to random holders of  Tenshinryu Samurai.
+
+ 40%  DojoPop Global leaderboard unlocked. Who practices the most?
+
+50% The Tenshinryu Samurai Youtube channel is unlocked with exclusive member’s only content, Kenjutsu, Battojutsu, and Taijutsu classes. All video content archived on Arweave.
+
+60% Member Exclusive The Tenshinryu Dojo Store gets unlocked, featuring Limited Edition tees, hoodies, and other goodies.
+
+70% The Tenshinryu Samurai game beta..
+
+80% Airdrop updated erc-3525 slotted tokens to holders of The TENSHIN-RYU SAMURAI, mint Katana upgrade for holders.
+
+90% DojoPop Global gamified leaderboard unlocked. Who practices the most? What styles practice most? BJJ? UFC? Judo? Karate? What countries, etc. 
+
+100% Katana, Wakizashi, Armor upgrades available on the new erc-3525 tokens, integrate with WEB3 games. Integrate with Renta.fi to rent out skills, armor, etc.
+
+110% more to come!
