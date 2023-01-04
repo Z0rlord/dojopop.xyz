@@ -1,16 +1,30 @@
-# dojopop.net
-Dojo Proof of Practice - The Digital Dojo Passport with Tenshinryu Hyoho
 
-Dojopop.net is a digital dojo layered over your real world practice that respects and protects lineage, privacy, and authenticity. I don't want to say meta, but it's the meta dojo.
+Welcome to DojoPop!   Dojo Proof of Practice - The Digital Dojo Passport with Tenshinryu Hyoho
 
 Web3 Dapp for the tens of millions strong martial arts and community to track practice, achievements, seminar and community participation and awarding challenge coin NFTs. In addition hodlrs will be able to level up gamefi avatar NFTs through their real world practice and share them with proxies.
+
+
+DojoPop is a revolutionary software application that helps martial arts practitioners track their progress and earn rewards for their dedication to their craft. With DojoPop, instructors can easily manage their schools and students, and students can document their achievements and protect traditional martial arts lineages through the use of the decentralized Arweave network.
+
+Here are some key features of DojoPop:
+
+Track and verify training: DojoPop allows practitioners to track and document their training hours and progress, making it easy for them to demonstrate their skills and achievements to potential schools or employers.
+
+Manage schools and students: Instructors can use DojoPop to manage their schools and students, including tracking attendance and creating class schedules.
+
+Web3 Dapp for the tens of millions strong martial arts and community to track practice, achievements, seminar and community participation and awarding challenge coin NFTs. In addition hodlrs will be able to level up gamefi avatar NFTs through their real world practice and share them with proxies.
+
+Earn rewards: By practicing and becoming more skilled in martial arts, users can earn DojoPop tokens as a reward for their dedication and hard work.
+
+Protect traditional martial arts lineages: DojoPop uses the decentralized Arweave network to securely store and verify training records, helping to preserve the art and culture of martial arts.
+
+We hope you enjoy using DojoPop! If you have any feedback or suggestions, please don't hesitate to reach out to us.
 
 
 ROADMAP
 
 Q1 2023 Tenshinryu Samurai sale
 
- 
 
 10% We pay back our angel investors.
 
