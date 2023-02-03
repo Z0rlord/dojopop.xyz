@@ -21,29 +21,34 @@ Protect traditional martial arts lineages: DojoPop uses the decentralized Arweav
 We hope you enjoy using DojoPop! If you have any feedback or suggestions, please don't hesitate to reach out to us.
 
 
-ROADMAP
+ROADMAP:
+Q1 2023 
 
-Q1 2023 Tenshinryu Samurai sale
-
+10,000 TENSHINRYU SAMURAI NFT SALE
 
 10% We pay back our angel investors.
 
-20%  DOJOPOP - Dojo Proof of Practice application for Iphone and Android - is launched. Get paid to practice IRL with a SOUL BOUND, non-transferable certificate. Dojopop.xyz is the digital dojo layered over your real world practice that respects and protects lineage, privacy, and authenticity.
+Q2 2023
+20%  DOJOPOP - Dojo Proof of Practice mobile application is launched. Get paid to train BJJ, Judo, MMA, Aikido etc with a SOUL BOUND, non-transferable certificate. Dojopop.xyz is the Web3 dojo layered over your real world practice that respects and protects lineage, privacy, and authenticity.
 
-30% We release THE 13th KLAN. (100 tokens held back from the sale) are airdropped to random holders of  Tenshinryu Samurai.
+30% We release The 100 SAMURAI. (100 legendary Samurai tokens held back from the sale) are airdropped to random holders of  the Tenshinryu Samurai NFTs.
 
- 40%  DojoPop Global leaderboard unlocked. Who practices the most?
+Q3 2023
+ 40%  DojoPop Global gamified Leaderboard unlocked. Who practices the most? What styles practice most? BJJ? MMA? UFC? Judo? Karate? What countries, etc. 
 
-50% The Tenshinryu Samurai Youtube channel is unlocked with exclusive member’s only content, Kenjutsu, Battojutsu, and Taijutsu classes. All video content archived on Arweave.
+50% The Tenshinryu Samurai content studio is unlocked. 
 
 60% Member Exclusive The Tenshinryu Dojo Store gets unlocked, featuring Limited Edition tees, hoodies, and other goodies.
 
-70% The Tenshinryu Samurai game beta..
+Q4 2023
+70% Airdrop updated erc-3525 slotted tokens to holders of The TENSHIN-RYU SAMURAI, mint Katana upgrade for holders.
 
-80% Airdrop updated erc-3525 slotted tokens to holders of The TENSHIN-RYU SAMURAI, mint Katana upgrade for holders.
+80% DojoPop Arweave Archive unlocked. Token gated video records of classes, competitions, seminars backed up for the next 200 years. Protect your lineage!
 
-90% DojoPop Global gamified leaderboard unlocked. Who practices the most? What styles practice most? BJJ? UFC? Judo? Karate? What countries, etc. 
+90% Katana, Wakizashi, Armor upgrades available on the new erc-3525 tokens, integrate with WEB3 games. Integrate with Renta.fi to rent out skills, armor, etc.
 
-100% Katana, Wakizashi, Armor upgrades available on the new erc-3525 tokens, integrate with WEB3 games. Integrate with Renta.fi to rent out skills, armor, etc.
+Q1 2024
+100% Tokyo clubhouse opens for holders with studio for Augmented Reality, Motion capture, and decentralized AI movement scanning and content production.
 
-110% more to come!
+Q2 2024
+110% The Tenshinryu Samurai game beta. Upgrade your game with real life practice in your home dojo.
