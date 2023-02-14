@@ -1,7 +1,7 @@
 
 Welcome to DojoPop!   Dojo Proof of Practice - The Digital Dojo Passport with Tenshinryu Hyoho
 
-Web3 Dapp for the tens of millions strong martial arts and community to track practice, achievements, seminar and community participation and awarding challenge coin NFTs. In addition hodlrs will be able to level up gamefi avatar NFTs through their real world practice and share them with proxies.
+"Become dangerous, Earn rewards!" Web3 Dapp for the tens of millions strong martial arts and community to track practice, achievements, seminar and community participation and awarding challenge coin NFTs. In addition hodlrs will be able to level up gamefi avatar NFTs through their real world practice and share them with proxies.
 
 
 DojoPop is a revolutionary software application that helps martial arts practitioners track their progress and earn rewards for their dedication to their craft. With DojoPop, instructors can easily manage their schools and students, and students can document their achievements and protect traditional martial arts lineages through the use of the decentralized Arweave network.
