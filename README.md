@@ -22,32 +22,30 @@ We hope you enjoy using DojoPop! If you have any feedback or suggestions, please
 
 
 ROADMAP:
-Q1 2023 
-
+Q2 2023 
 10,000 TENSHINRYU SAMURAI NFT SALE
+ 10% We pay back our angel investors.
 
-10% We pay back our angel investors.
-
-Q2 2023
+Q3 2023
 20%  DOJOPOP - Dojo Proof of Practice mobile application is launched. Get paid to train BJJ, Judo, MMA, Aikido etc with a SOUL BOUND, non-transferable certificate. Dojopop.xyz is the Web3 dojo layered over your real world practice that respects and protects lineage, privacy, and authenticity.
 
 30% We release The 100 SAMURAI. (100 legendary Samurai tokens held back from the sale) are airdropped to random holders of  the Tenshinryu Samurai NFTs.
 
-Q3 2023
+Q4 2023
  40%  DojoPop Global gamified Leaderboard unlocked. Who practices the most? What styles practice most? BJJ? MMA? UFC? Judo? Karate? What countries, etc. 
 
 50% The Tenshinryu Samurai content studio is unlocked. 
 
 60% Member Exclusive The Tenshinryu Dojo Store gets unlocked, featuring Limited Edition tees, hoodies, and other goodies.
 
-Q4 2023
+Q1 2024
 70% Airdrop updated erc-3525 slotted tokens to holders of The TENSHIN-RYU SAMURAI, mint Katana upgrade for holders.
 
 80% DojoPop Arweave Archive unlocked. Token gated video records of classes, competitions, seminars backed up for the next 200 years. Protect your lineage!
 
 90% Katana, Wakizashi, Armor upgrades available on the new erc-3525 tokens, integrate with WEB3 games. Integrate with Renta.fi to rent out skills, armor, etc.
 
-Q1 2024
+Q2 2024
 100% Tokyo clubhouse opens for holders with studio for Augmented Reality, Motion capture, and decentralized AI movement scanning and content production.
 
 Q2 2024
