@@ -22,9 +22,10 @@ We hope you enjoy using DojoPop! If you have any feedback or suggestions, please
 
 
 ROADMAP:
+
 Q2 2023 
 10,000 TENSHINRYU SAMURAI NFT SALE
- 10% We pay back our angel investors.
+10% We pay back our angel investors.
 
 Q3 2023
 20%  DOJOPOP - Dojo Proof of Practice mobile application is launched. Get paid to train BJJ, Judo, MMA, Aikido etc with a SOUL BOUND, non-transferable certificate. Dojopop.xyz is the Web3 dojo layered over your real world practice that respects and protects lineage, privacy, and authenticity.
