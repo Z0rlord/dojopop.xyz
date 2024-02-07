@@ -1,5 +1,5 @@
 
-Welcome to DojoPop!   Dojo Proof of Practice - The Digital Dojo Passport with Tenshinryu Hyoho
+Welcome to DojoPop!   Dojo Proof of Practice - The Digital Dojo Passport and sotre of Martial Arts Culture
 
 "Become dangerous, Earn rewards!" Web3 Dapp for the tens of millions strong martial arts and community to track practice, achievements, seminar and community participation and awarding challenge coin NFTs. In addition hodlrs will be able to level up gamefi avatar NFTs through their real world practice and share them with proxies.
 
