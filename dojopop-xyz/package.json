@@ -11,7 +11,7 @@
     "audit-fix": "npm audit fix"
   },
   "dependencies": {
-    "next": "^15.4.0-canary.79",
+    "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -24,6 +24,6 @@
     "eslint": "^9.28.0",
     "eslint-config-next": "^15.3.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "5.8.3"
   }
 }

@@ -1,0 +1,50 @@
+name: Security Audit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.18.0'
+        cache: 'npm'
+        cache-dependency-path: 'dojopop-xyz/package-lock.json'
+        
+    - name: Install dependencies
+      run: |
+        cd dojopop-xyz
+        npm ci
+        
+    - name: Run npm audit
+      run: |
+        cd dojopop-xyz
+        npm audit --audit-level=moderate
+        
+    - name: Run security scan with multiple tools
+      run: |
+        cd dojopop-xyz
+        npx audit-ci --moderate
+        
+    - name: Check for outdated packages
+      run: |
+        cd dojopop-xyz
+        npm outdated || true
+        
+    - name: Build project to ensure no issues
+      run: |
+        cd dojopop-xyz
+        npm run build
