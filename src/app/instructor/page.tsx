@@ -2,18 +2,26 @@
 
 import { useState } from "react";
 import StudentQR from "@/components/StudentQR";
+import CreateClassForm from "@/components/CreateClassForm";
 
 interface Class {
   id: string;
   name: string;
   instructor: { name: string };
   schedule: string;
+  maxStudents: number;
 }
 
 const mockClasses: Class[] = [
-  { id: "cls_001", name: "Kids BJJ", instructor: { name: "Sensei Mike" }, schedule: "Mon/Wed 16:00" },
-  { id: "cls_002", name: "Adult BJJ", instructor: { name: "Professor Ana" }, schedule: "Mon/Wed 19:00" },
-  { id: "cls_003", name: "Muay Thai", instructor: { name: "Kru Tom" }, schedule: "Tue/Thu 18:00" },
+  { id: "cls_001", name: "Kids BJJ", instructor: { name: "Sensei Mike" }, schedule: "Mon/Wed 16:00", maxStudents: 20 },
+  { id: "cls_002", name: "Adult BJJ", instructor: { name: "Professor Ana" }, schedule: "Mon/Wed 19:00", maxStudents: 30 },
+  { id: "cls_003", name: "Muay Thai", instructor: { name: "Kru Tom" }, schedule: "Tue/Thu 18:00", maxStudents: 25 },
+];
+
+const mockInstructors = [
+  { id: "inst_001", name: "Sensei Mike" },
+  { id: "inst_002", name: "Professor Ana" },
+  { id: "inst_003", name: "Kru Tom" },
 ];
 
 const mockStudents = [
@@ -25,6 +33,7 @@ const mockStudents = [
 export default function InstructorDashboard() {
   const [activeTab, setActiveTab] = useState<"students" | "qr" | "classes" | "checkins">("students");
   const [selectedClass, setSelectedClass] = useState<string>("");
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   const selectedClassData = mockClasses.find((c) => c.id === selectedClass);
 
@@ -40,7 +49,10 @@ export default function InstructorDashboard() {
           {(["students", "classes", "qr", "checkins"] as const).map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => {
+                setActiveTab(tab);
+                setShowCreateForm(false);
+              }}
               className={`px-4 py-2 rounded transition capitalize whitespace-nowrap ${
                 activeTab === tab
                   ? "bg-red-600 text-white"
@@ -91,21 +103,49 @@ export default function InstructorDashboard() {
 
         {activeTab === "classes" && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Classes</h2>
-            {mockClasses.map((cls) => (
-              <div key={cls.id} className="p-4 bg-gray-900 rounded-lg">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-semibold text-lg">{cls.name}</p>
-                    <p className="text-gray-400">Instructor: {cls.instructor.name}</p>
-                    <p className="text-sm text-gray-500 mt-1">{cls.schedule}</p>
-                  </div>
-                  <button className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm">
-                    View Check-ins
-                  </button>
-                </div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Classes</h2>
+              <button
+                onClick={() => setShowCreateForm(!showCreateForm)}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold transition"
+              >
+                {showCreateForm ? "Cancel" : "+ Create Class"}
+              </button>
+            </div>
+
+            {showCreateForm && (
+              <div className="p-6 bg-gray-900 rounded-lg border border-gray-800">
+                <h3 className="text-lg font-semibold mb-4">Create New Class</h3>
+                <CreateClassForm
+                  instructors={mockInstructors}
+                  dojoId="demo-dojo-id"
+                  onSuccess={() => {
+                    setShowCreateForm(false);
+                    // In production, refresh class list here
+                  }}
+                />
               </div>
-            ))}
+            )}
+
+            <div className="space-y-3">
+              {mockClasses.map((cls) => (
+                <div key={cls.id} className="p-4 bg-gray-900 rounded-lg">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-semibold text-lg">{cls.name}</p>
+                      <p className="text-gray-400">Instructor: {cls.instructor.name}</p>
+                      <p className="text-sm text-gray-500 mt-1">{cls.schedule}</p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Max {cls.maxStudents} students
+                      </p>
+                    </div>
+                    <button className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm">
+                      View Check-ins
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
