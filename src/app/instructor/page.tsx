@@ -3,7 +3,19 @@
 import { useState } from "react";
 import StudentQR from "@/components/StudentQR";
 
-// Mock students for demo
+interface Class {
+  id: string;
+  name: string;
+  instructor: { name: string };
+  schedule: string;
+}
+
+const mockClasses: Class[] = [
+  { id: "cls_001", name: "Kids BJJ", instructor: { name: "Sensei Mike" }, schedule: "Mon/Wed 16:00" },
+  { id: "cls_002", name: "Adult BJJ", instructor: { name: "Professor Ana" }, schedule: "Mon/Wed 19:00" },
+  { id: "cls_003", name: "Muay Thai", instructor: { name: "Kru Tom" }, schedule: "Tue/Thu 18:00" },
+];
+
 const mockStudents = [
   { id: "stu_001", name: "Jan Kowalski", beltRank: "WHITE", stripes: 2 },
   { id: "stu_002", name: "Anna Nowak", beltRank: "YELLOW", stripes: 1 },
@@ -11,22 +23,25 @@ const mockStudents = [
 ];
 
 export default function InstructorDashboard() {
-  const [activeTab, setActiveTab] = useState<"students" | "qr" | "checkins">("students");
+  const [activeTab, setActiveTab] = useState<"students" | "qr" | "classes" | "checkins">("students");
+  const [selectedClass, setSelectedClass] = useState<string>("");
+
+  const selectedClassData = mockClasses.find((c) => c.id === selectedClass);
 
   return (
     <div className="min-h-screen bg-gray-950 p-4">
       <div className="max-w-4xl mx-auto">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-red-500">Instructor Dashboard</h1>
-          <p className="text-gray-400">Manage students and generate QR codes</p>
+          <p className="text-gray-400">Manage classes, students, and check-ins</p>
         </header>
 
-        <nav className="flex gap-4 mb-6 border-b border-gray-800 pb-4">
-          {(["students", "qr", "checkins"] as const).map((tab) => (
+        <nav className="flex gap-4 mb-6 border-b border-gray-800 pb-4 overflow-x-auto">
+          {(["students", "classes", "qr", "checkins"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded transition capitalize ${
+              className={`px-4 py-2 rounded transition capitalize whitespace-nowrap ${
                 activeTab === tab
                   ? "bg-red-600 text-white"
                   : "bg-gray-800 text-gray-400 hover:bg-gray-700"
@@ -39,7 +54,22 @@ export default function InstructorDashboard() {
 
         {activeTab === "students" && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Students</h2>
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Students</h2>
+              <select
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+                className="px-3 py-2 bg-gray-800 rounded border border-gray-700"
+              >
+                <option value="">All Classes</option>
+                {mockClasses.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name} - {cls.instructor.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {mockStudents.map((student) => (
               <div
                 key={student.id}
@@ -54,6 +84,26 @@ export default function InstructorDashboard() {
                 <button className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm">
                   Edit
                 </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === "classes" && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Classes</h2>
+            {mockClasses.map((cls) => (
+              <div key={cls.id} className="p-4 bg-gray-900 rounded-lg">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-semibold text-lg">{cls.name}</p>
+                    <p className="text-gray-400">Instructor: {cls.instructor.name}</p>
+                    <p className="text-sm text-gray-500 mt-1">{cls.schedule}</p>
+                  </div>
+                  <button className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm">
+                    View Check-ins
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -75,9 +125,33 @@ export default function InstructorDashboard() {
         )}
 
         {activeTab === "checkins" && (
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Recent Check-ins</h2>
-            <p className="text-gray-500">No check-ins yet today.</p>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Recent Check-ins</h2>
+              <select
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+                className="px-3 py-2 bg-gray-800 rounded border border-gray-700"
+              >
+                <option value="">All Classes</option>
+                {mockClasses.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {selectedClassData ? (
+              <div className="p-4 bg-gray-900 rounded-lg">
+                <p className="text-gray-400">
+                  Showing check-ins for <strong>{selectedClassData.name}</strong> with{" "}
+                  {selectedClassData.instructor.name}
+                </p>
+              </div>
+            ) : (
+              <p className="text-gray-500">Select a class to view check-ins</p>
+            )}
           </div>
         )}
       </div>

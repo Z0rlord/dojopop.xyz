@@ -47,31 +47,35 @@ model Instructor {
   password String
   isAdmin  Boolean @default(false)
 
-  dojo Dojo @relation(fields: [dojoId], references: [id])
+  dojo    Dojo    @relation(fields: [dojoId], references: [id])
+  classes Class[]
 }
 
 model Class {
-  id          String   @id @default(uuid())
-  dojoId      String
-  name        String
-  schedule    String   // Cron-like or simple description
-  maxStudents Int      @default(30)
+  id           String   @id @default(uuid())
+  dojoId       String
+  instructorId String
+  name         String
+  schedule     String   // e.g., "Mon/Wed 18:00-19:30"
+  maxStudents  Int      @default(30)
+  createdAt    DateTime @default(now())
 
-  dojo     Dojo      @relation(fields: [dojoId], references: [id])
-  checkIns CheckIn[]
+  dojo       Dojo      @relation(fields: [dojoId], references: [id])
+  instructor Instructor @relation(fields: [instructorId], references: [id])
+  checkIns   CheckIn[]
 }
 
 model CheckIn {
-  id        String   @id @default(uuid())
-  studentId String
-  dojoId    String
-  classId   String?
+  id          String   @id @default(uuid())
+  studentId   String
+  dojoId      String
+  classId     String
   checkedInAt DateTime @default(now())
-  method    String   @default("qr") // qr, manual, nfc
+  method      String   @default("qr") // qr, manual, nfc
 
   student Student @relation(fields: [studentId], references: [id])
   dojo    Dojo    @relation(fields: [dojoId], references: [id])
-  class   Class?  @relation(fields: [classId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
 }
 
 model Video {

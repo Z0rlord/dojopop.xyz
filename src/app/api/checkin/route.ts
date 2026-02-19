@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
-    const { qrCode, dojoId } = await request.json();
+    const { qrCode, dojoId, classId } = await request.json();
 
-    if (!qrCode || !dojoId) {
+    if (!qrCode || !dojoId || !classId) {
       return NextResponse.json(
-        { error: "Missing qrCode or dojoId" },
+        { error: "Missing qrCode, dojoId, or classId" },
         { status: 400 }
       );
     }
@@ -34,11 +34,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create check-in
+    // Verify class exists and belongs to dojo
+    const classData = await prisma.class.findFirst({
+      where: { id: classId, dojoId },
+      include: { instructor: true },
+    });
+
+    if (!classData) {
+      return NextResponse.json(
+        { error: "Class not found" },
+        { status: 404 }
+      );
+    }
+
+    // Create check-in with class
     const checkIn = await prisma.checkIn.create({
       data: {
         studentId: student.id,
         dojoId,
+        classId,
         method: "qr",
       },
     });
@@ -55,6 +69,10 @@ export async function POST(request: NextRequest) {
         name: student.name,
         beltRank: student.beltRank,
         stripes: student.stripes,
+      },
+      class: {
+        name: classData.name,
+        instructor: classData.instructor.name,
       },
       checkIn,
     });
