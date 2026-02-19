@@ -55,17 +55,23 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col gap-4 w-full max-w-sm">
-          <button className="w-full py-4 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition">
+          <a
+            href="/checkin"
+            className="w-full py-4 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition text-center block"
+          >
             {current.checkIn}
-          </button>
-          
+          </a>
+
           <div className="flex gap-4">
             <button className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
               {current.studentLogin}
             </button>
-            <button className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+            <a
+              href="/instructor"
+              className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-center block"
+            >
               {current.instructorLogin}
-            </button>
+            </a>
           </div>
         </div>
       </main>
