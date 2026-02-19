@@ -3,6 +3,7 @@
 import { useState } from "react";
 import StudentQR from "@/components/StudentQR";
 import CreateClassForm from "@/components/CreateClassForm";
+import CreateInstructorForm from "@/components/CreateInstructorForm";
 
 interface Class {
   id: string;
@@ -31,9 +32,10 @@ const mockStudents = [
 ];
 
 export default function InstructorDashboard() {
-  const [activeTab, setActiveTab] = useState<"students" | "qr" | "classes" | "checkins">("students");
+  const [activeTab, setActiveTab] = useState<"students" | "qr" | "classes" | "checkins" | "instructors">("students");
   const [selectedClass, setSelectedClass] = useState<string>("");
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showCreateInstructor, setShowCreateInstructor] = useState(false);
 
   const selectedClassData = mockClasses.find((c) => c.id === selectedClass);
 
@@ -46,12 +48,13 @@ export default function InstructorDashboard() {
         </header>
 
         <nav className="flex gap-4 mb-6 border-b border-gray-800 pb-4 overflow-x-auto">
-          {(["students", "classes", "qr", "checkins"] as const).map((tab) => (
+          {(["students", "classes", "instructors", "qr", "checkins"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => {
                 setActiveTab(tab);
                 setShowCreateForm(false);
+                setShowCreateInstructor(false);
               }}
               className={`px-4 py-2 rounded transition capitalize whitespace-nowrap ${
                 activeTab === tab
@@ -141,6 +144,49 @@ export default function InstructorDashboard() {
                     </div>
                     <button className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm">
                       View Check-ins
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === "instructors" && (
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Instructors</h2>
+              <button
+                onClick={() => setShowCreateInstructor(!showCreateInstructor)}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold transition"
+              >
+                {showCreateInstructor ? "Cancel" : "+ Add Instructor"}
+              </button>
+            </div>
+
+            {showCreateInstructor && (
+              <div className="p-6 bg-gray-900 rounded-lg border border-gray-800">
+                <h3 className="text-lg font-semibold mb-4">Add New Instructor</h3>
+                <CreateInstructorForm
+                  dojoId="demo-dojo-id"
+                  onSuccess={() => {
+                    setShowCreateInstructor(false);
+                    // In production, refresh instructor list here
+                  }}
+                />
+              </div>
+            )}
+
+            <div className="space-y-3">
+              {mockInstructors.map((inst) => (
+                <div key={inst.id} className="p-4 bg-gray-900 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="font-semibold">{inst.name}</p>
+                      <p className="text-sm text-gray-400">Instructor</p>
+                    </div>
+                    <button className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm">
+                      Edit
                     </button>
                   </div>
                 </div>
