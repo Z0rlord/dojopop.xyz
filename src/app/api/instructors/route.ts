@@ -9,15 +9,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const dojoId = searchParams.get("dojoId");
 
-    if (!dojoId) {
-      return NextResponse.json(
-        { error: "dojoId is required" },
-        { status: 400 }
-      );
-    }
+    const where = dojoId ? { dojoId } : {};
 
     const instructors = await prisma.instructor.findMany({
-      where: { dojoId },
+      where,
       select: { id: true, name: true, email: true, isAdmin: true },
       orderBy: { name: "asc" },
     });
@@ -43,7 +38,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash password (simple hash for now - use bcrypt in production)
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
 
     const instructor = await prisma.instructor.create({
@@ -64,7 +58,6 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Create instructor error:", error);
     
-    // Check for duplicate email
     if (error instanceof Error && error.message.includes("Unique constraint")) {
       return NextResponse.json(
         { error: "Email already exists" },

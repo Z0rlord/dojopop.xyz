@@ -56,7 +56,7 @@ model Class {
   dojoId       String
   instructorId String
   name         String
-  schedule     String   // e.g., "Mon/Wed 18:00-19:30"
+  schedule     String
   maxStudents  Int      @default(30)
   createdAt    DateTime @default(now())
 
@@ -71,7 +71,7 @@ model CheckIn {
   dojoId      String
   classId     String
   checkedInAt DateTime @default(now())
-  method      String   @default("qr") // qr, manual, nfc
+  method      String   @default("qr")
 
   student Student @relation(fields: [studentId], references: [id])
   dojo    Dojo    @relation(fields: [dojoId], references: [id])

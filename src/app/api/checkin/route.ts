@@ -1,7 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import crypto from "crypto";
 
 const prisma = new PrismaClient();
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const dojoId = searchParams.get("dojoId");
+    const classId = searchParams.get("classId");
+
+    const where: any = {};
+    if (dojoId) where.dojoId = dojoId;
+    if (classId) where.classId = classId;
+
+    const checkIns = await prisma.checkIn.findMany({
+      where,
+      include: {
+        student: { select: { id: true, name: true, beltRank: true, stripes: true } },
+        class: { select: { id: true, name: true, instructor: { select: { name: true } } } },
+      },
+      orderBy: { checkedInAt: "desc" },
+      take: 50,
+    });
+
+    return NextResponse.json({ checkIns });
+  } catch (error) {
+    console.error("Get check-ins error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,10 +45,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find student by QR code
     const student = await prisma.student.findUnique({
       where: { qrCode },
-      include: { dojo: true },
     });
 
     if (!student) {
@@ -34,10 +63,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify class exists and belongs to dojo
     const classData = await prisma.class.findFirst({
       where: { id: classId, dojoId },
-      include: { instructor: true },
+      include: { instructor: { select: { name: true } } },
     });
 
     if (!classData) {
@@ -47,7 +75,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create check-in with class
     const checkIn = await prisma.checkIn.create({
       data: {
         studentId: student.id,
@@ -57,7 +84,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Update student's last check-in
     await prisma.student.update({
       where: { id: student.id },
       data: { lastCheckIn: new Date() },

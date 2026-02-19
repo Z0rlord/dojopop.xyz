@@ -4,6 +4,28 @@ import crypto from "crypto";
 
 const prisma = new PrismaClient();
 
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const dojoId = searchParams.get("dojoId");
+
+    const where = dojoId ? { dojoId } : {};
+
+    const students = await prisma.student.findMany({
+      where,
+      orderBy: { name: "asc" },
+    });
+
+    return NextResponse.json({ students });
+  } catch (error) {
+    console.error("Get students error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { name, email, phone, dojoId } = await request.json();
@@ -15,7 +37,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique QR code
     const qrCode = crypto.randomUUID();
 
     const student = await prisma.student.create({
@@ -25,8 +46,6 @@ export async function POST(request: NextRequest) {
         phone: phone || null,
         dojoId,
         qrCode,
-        beltRank: "WHITE",
-        stripes: 0,
       },
     });
 

@@ -8,16 +8,11 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const dojoId = searchParams.get("dojoId");
 
-    if (!dojoId) {
-      return NextResponse.json(
-        { error: "dojoId is required" },
-        { status: 400 }
-      );
-    }
+    const where = dojoId ? { dojoId } : {};
 
     const classes = await prisma.class.findMany({
-      where: { dojoId },
-      include: { instructor: true },
+      where,
+      include: { instructor: { select: { id: true, name: true } } },
       orderBy: { name: "asc" },
     });
 
@@ -50,7 +45,7 @@ export async function POST(request: NextRequest) {
         dojoId,
         maxStudents: maxStudents || 30,
       },
-      include: { instructor: true },
+      include: { instructor: { select: { id: true, name: true } } },
     });
 
     return NextResponse.json({
