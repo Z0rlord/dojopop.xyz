@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Dojo {
+  id        String   @id @default(uuid())
+  name      String
+  location  String?
+  timezone  String   @default("Europe/Warsaw")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  students    Student[]
+  classes     Class[]
+  checkIns    CheckIn[]
+  instructors Instructor[]
+}
+
+model Student {
+  id          String    @id @default(uuid())
+  dojoId      String
+  name        String
+  email       String?
+  phone       String?
+  beltRank    BeltRank  @default(WHITE)
+  stripes     Int       @default(0)
+  qrCode      String    @unique
+  isActive    Boolean   @default(true)
+  joinedAt    DateTime  @default(now())
+  lastCheckIn DateTime?
+
+  dojo     Dojo      @relation(fields: [dojoId], references: [id])
+  checkIns CheckIn[]
+  videos   Video[]
+}
+
+model Instructor {
+  id       String @id @default(uuid())
+  dojoId   String
+  name     String
+  email    String @unique
+  password String
+  isAdmin  Boolean @default(false)
+
+  dojo Dojo @relation(fields: [dojoId], references: [id])
+}
+
+model Class {
+  id          String   @id @default(uuid())
+  dojoId      String
+  name        String
+  schedule    String   // Cron-like or simple description
+  maxStudents Int      @default(30)
+
+  dojo     Dojo      @relation(fields: [dojoId], references: [id])
+  checkIns CheckIn[]
+}
+
+model CheckIn {
+  id        String   @id @default(uuid())
+  studentId String
+  dojoId    String
+  classId   String?
+  checkedInAt DateTime @default(now())
+  method    String   @default("qr") // qr, manual, nfc
+
+  student Student @relation(fields: [studentId], references: [id])
+  dojo    Dojo    @relation(fields: [dojoId], references: [id])
+  class   Class?  @relation(fields: [classId], references: [id])
+}
+
+model Video {
+  id          String   @id @default(uuid())
+  studentId   String
+  title       String
+  description String?
+  url         String
+  technique   String?
+  recordedAt  DateTime @default(now())
+
+  student Student @relation(fields: [studentId], references: [id])
+}
+
+enum BeltRank {
+  WHITE
+  YELLOW
+  ORANGE
+  GREEN
+  BLUE
+  PURPLE
+  BROWN
+  BLACK
+  RED_BLACK
+  RED_WHITE
+  RED
+}
