@@ -10,6 +10,7 @@
     "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@crossmint/client-sdk-react-ui": "^2.6.17",
     "@prisma/client": "^6.19.2",
     "@yudiel/react-qr-scanner": "^2.5.1",
     "googleapis": "^171.4.0",
