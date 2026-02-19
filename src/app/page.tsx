@@ -63,9 +63,12 @@ export default function Home() {
           </a>
 
           <div className="flex gap-4">
-            <button className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+            <a
+              href="/signup"
+              className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-center block"
+            >
               {current.studentLogin}
-            </button>
+            </a>
             <a
               href="/instructor"
               className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-center block"
