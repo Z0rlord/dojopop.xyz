@@ -19,6 +19,7 @@ model Dojo {
   classes     Class[]
   checkIns    CheckIn[]
   instructors Instructor[]
+  leaderboards Leaderboard[]
 }
 
 model Student {
@@ -31,12 +32,19 @@ model Student {
   stripes     Int       @default(0)
   qrCode      String    @unique
   isActive    Boolean   @default(true)
-  joinedAt    DateTime  @default(now())
+  joinedAt    DateTime @default(now())
   lastCheckIn DateTime?
+  
+  // DOJO Token balance
+  dojoBalance Int       @default(0)
+  totalEarned Int       @default(0)
+  totalSpent  Int       @default(0)
 
-  dojo     Dojo      @relation(fields: [dojoId], references: [id])
-  checkIns CheckIn[]
-  videos   Video[]
+  dojo        Dojo              @relation(fields: [dojoId], references: [id])
+  checkIns    CheckIn[]
+  videos      Video[]
+  transactions TokenTransaction[]
+  leaderboardEntries LeaderboardEntry[]
 }
 
 model Instructor {
@@ -72,6 +80,9 @@ model CheckIn {
   classId     String
   checkedInAt DateTime @default(now())
   method      String   @default("qr")
+  
+  // Track if tokens were awarded for this check-in
+  tokensAwarded Int     @default(0)
 
   student Student @relation(fields: [studentId], references: [id])
   dojo    Dojo    @relation(fields: [dojoId], references: [id])
@@ -86,8 +97,57 @@ model Video {
   url         String
   technique   String?
   recordedAt  DateTime @default(now())
+  
+  // Track if tokens were awarded for this video
+  tokensAwarded Int     @default(0)
 
   student Student @relation(fields: [studentId], references: [id])
+}
+
+model TokenTransaction {
+  id          String   @id @default(uuid())
+  studentId   String
+  amount      Int      // Positive for earn, negative for spend
+  type        TokenTransactionType
+  description String
+  relatedId   String?  // Check-in ID, Video ID, etc.
+  createdAt   DateTime @default(now())
+
+  student Student @relation(fields: [studentId], references: [id])
+}
+
+model Leaderboard {
+  id          String   @id @default(uuid())
+  dojoId      String
+  month       String   // Format: "2026-02"
+  year        Int
+  name        String   // e.g., "February 2026 Global Leaderboard"
+  status      LeaderboardStatus @default(ACTIVE)
+  prizePool   Int      @default(0)  // Total DOJO tokens for prizes
+  createdAt   DateTime @default(now())
+  endedAt     DateTime?
+
+  dojo    Dojo              @relation(fields: [dojoId], references: [id])
+  entries LeaderboardEntry[]
+}
+
+model LeaderboardEntry {
+  id           String   @id @default(uuid())
+  leaderboardId String
+  studentId    String
+  rank         Int?
+  checkIns     Int      @default(0)
+  streak       Int      @default(0)
+  videos       Int      @default(0)
+  totalScore   Int      @default(0)
+  prizeAwarded Int      @default(0)  // DOJO tokens won
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  leaderboard Leaderboard @relation(fields: [leaderboardId], references: [id])
+  student     Student     @relation(fields: [studentId], references: [id])
+
+  @@unique([leaderboardId, studentId])
 }
 
 enum BeltRank {
@@ -102,4 +162,21 @@ enum BeltRank {
   RED_BLACK
   RED_WHITE
   RED
+}
+
+enum TokenTransactionType {
+  CHECK_IN
+  STREAK_BONUS
+  BELT_PROMOTION
+  VIDEO_UPLOAD
+  REFERRAL
+  LEADERBOARD_PRIZE
+  REDEMPTION
+  ADMIN_ADJUSTMENT
+}
+
+enum LeaderboardStatus {
+  ACTIVE
+  ENDED
+  PRIZES_DISTRIBUTED
 }
