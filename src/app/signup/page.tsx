@@ -16,6 +16,7 @@ export default function SignupPage() {
     message: string;
     qrCode?: string;
     studentName?: string;
+    emailSent?: boolean;
   } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,7 +29,7 @@ export default function SignupPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          dojoId: "demo-dojo-id", // In production, this comes from context
+          dojoId: "e6416114-d45d-47b3-9572-4418869d7bba", // Warsaw BJJ Academy
         }),
       });
 
@@ -40,6 +41,7 @@ export default function SignupPage() {
           message: "Welcome to Dojo Pop! Your QR code is ready.",
           qrCode: data.student.qrCode,
           studentName: data.student.name,
+          emailSent: data.student.emailSent,
         });
       } else {
         setResult({
@@ -64,21 +66,36 @@ export default function SignupPage() {
           <div className="p-6 bg-green-900/30 rounded-lg border border-green-700">
             <h2 className="text-2xl font-bold text-green-400 mb-2">✅ Success!</h2>
             <p className="text-gray-300">{result.message}</p>
+            {result.emailSent && (
+              <p className="text-sm text-green-300 mt-2">
+                📧 QR code also sent to your email!
+              </p>
+            )}
           </div>
 
           <div className="p-6 bg-gray-900 rounded-lg">
             <h3 className="font-semibold mb-4">{result.studentName}</h3>
             <div className="bg-white p-4 rounded-lg inline-block">
-              {/* QR Code would be generated here */}
-              <div className="w-48 h-48 bg-gray-200 flex items-center justify-center">
-                <span className="text-gray-500 text-xs break-all px-2">
-                  {result.qrCode.slice(0, 20)}...
-                </span>
-              </div>
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+                  result.qrCode
+                )}&color=dc2626&bgcolor=1a1a1a`}
+                alt="Your QR Code"
+                className="w-48 h-48"
+              />
             </div>
             <p className="text-sm text-gray-500 mt-4">
-              Save this QR code! You&apos;ll need it to check in.
+              Save this QR code! Show it at the dojo to check in.
             </p>
+            <a
+              href={`https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(
+                result.qrCode
+              )}&color=dc2626&bgcolor=1a1a1a`}
+              download="dojo-pop-qr.png"
+              className="inline-block mt-4 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm"
+            >
+              Download QR Code
+            </a>
           </div>
 
           <button
@@ -136,6 +153,9 @@ export default function SignupPage() {
               className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
               placeholder="jan@example.com"
             />
+            <p className="text-xs text-gray-500 mt-1">
+              We&apos;ll send your QR code here
+            </p>
           </div>
 
           <div>
