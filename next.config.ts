@@ -7,7 +7,29 @@ const nextConfig: NextConfig = withPWA({
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
 })({
-  /* config options here */
+  // Netlify/Cloudflare deployment config
+  output: "standalone",
+  images: {
+    unoptimized: true,
+  },
+  // Allow all hosts (for Cloudflare)
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+        ],
+      },
+    ];
+  },
 });
 
 export default nextConfig;
