@@ -12,6 +12,8 @@ const nextConfig: NextConfig = withPWA({
   images: {
     unoptimized: true,
   },
+  // Disable Turbopack for now
+  turbopack: {},
   // Allow all hosts (for Cloudflare)
   async headers() {
     return [
