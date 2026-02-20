@@ -1,18 +1,12 @@
 import type { NextConfig } from "next";
-import withPWA from "next-pwa";
 
-const nextConfig: NextConfig = withPWA({
-  dest: "public",
-  register: true,
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === "development",
-})({
+const nextConfig: NextConfig = {
   // Netlify/Cloudflare deployment config
   output: "standalone",
   images: {
     unoptimized: true,
   },
-  // Disable Turbopack for now
+  // Disable Turbopack to avoid webpack conflict
   turbopack: {},
   // Allow all hosts (for Cloudflare)
   async headers() {
@@ -32,6 +26,6 @@ const nextConfig: NextConfig = withPWA({
       },
     ];
   },
-});
+};
 
 export default nextConfig;
