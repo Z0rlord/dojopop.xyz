@@ -121,6 +121,10 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-8 px-4 bg-gray-900 text-center text-gray-500">
+        <div className="flex justify-center gap-6 mb-4">
+          <a href="/terms" className="hover:text-white transition">Terms of Service</a>
+          <a href="/privacy" className="hover:text-white transition">Privacy Policy</a>
+        </div>
         <p>© 2026 Dojo Pop. All rights reserved.</p>
         <p className="mt-2">Made for martial artists, by martial artists.</p>
       </footer>
