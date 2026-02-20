@@ -5,14 +5,9 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
-[context.production.environment]
+  NEXTAUTH_SECRET = "placeholder_change_in_production"
   NEXTAUTH_URL = "https://app.the47.xyz"
   NEXT_PUBLIC_APP_URL = "https://app.the47.xyz"
 
-[context.deploy-preview.environment]
-  NEXTAUTH_URL = "${DEPLOY_PRIME_URL}"
-  NEXT_PUBLIC_APP_URL = "${DEPLOY_PRIME_URL}"
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
