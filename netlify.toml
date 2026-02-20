@@ -10,8 +10,8 @@
   package = "@netlify/plugin-nextjs"
 
 [context.production.environment]
-  NEXTAUTH_URL = "https://the47.xyz"
-  NEXT_PUBLIC_APP_URL = "https://the47.xyz"
+  NEXTAUTH_URL = "https://app.the47.xyz"
+  NEXT_PUBLIC_APP_URL = "https://app.the47.xyz"
 
 [context.deploy-preview.environment]
   NEXTAUTH_URL = "${DEPLOY_PRIME_URL}"
