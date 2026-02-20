@@ -18,6 +18,7 @@
     "next": "16.1.6",
     "next-auth": "^4.24.13",
     "next-pwa": "^5.6.0",
+    "nostr-tools": "^2.23.1",
     "prisma": "^6.19.2",
     "qrcode": "^1.5.4",
     "react": "19.2.3",
