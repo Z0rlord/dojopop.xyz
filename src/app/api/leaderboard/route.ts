@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Leaderboard } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     // Get current or specified month's leaderboard
     const targetMonth = month || new Date().toISOString().slice(0, 7);
 
-    let leaderboard = await prisma.leaderboard.findFirst({
+    let leaderboard: Leaderboard | null = await prisma.leaderboard.findFirst({
       where: {
         dojoId,
         month: targetMonth,
