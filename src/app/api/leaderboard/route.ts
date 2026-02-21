@@ -111,12 +111,43 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// Type for leaderboard with dojo and students included
+type LeaderboardWithDojo = Awaited<ReturnType<typeof prisma.leaderboard.findUnique<{
+  where: { id: string };
+  include: {
+    dojo: {
+      include: {
+        students: {
+          include: {
+            checkIns: true;
+            videos: true;
+          };
+        };
+      };
+    };
+  };
+}>>>;
+
 // Recalculate leaderboard scores
 export async function POST(request: NextRequest) {
   try {
     const { leaderboardId } = await request.json();
 
-    const leaderboard = await prisma.leaderboard.findUnique({
+    // First fetch the leaderboard to get the month
+    const leaderboardBase = await prisma.leaderboard.findUnique({
+      where: { id: leaderboardId },
+    });
+
+    if (!leaderboardBase) {
+      return NextResponse.json(
+        { error: "Leaderboard not found" },
+        { status: 404 }
+      );
+    }
+
+    const month = leaderboardBase.month;
+
+    const leaderboard: LeaderboardWithDojo = await prisma.leaderboard.findUnique({
       where: { id: leaderboardId },
       include: {
         dojo: {
@@ -126,16 +157,16 @@ export async function POST(request: NextRequest) {
                 checkIns: {
                   where: {
                     checkedInAt: {
-                      gte: new Date(`${leaderboard.month}-01`),
-                      lt: new Date(`${leaderboard.month}-31`),
+                      gte: new Date(`${month}-01`),
+                      lt: new Date(`${month}-31`),
                     },
                   },
                 },
                 videos: {
                   where: {
                     recordedAt: {
-                      gte: new Date(`${leaderboard.month}-01`),
-                      lt: new Date(`${leaderboard.month}-31`),
+                      gte: new Date(`${month}-01`),
+                      lt: new Date(`${month}-31`),
                     },
                   },
                 },
@@ -154,7 +185,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate scores for each student
-    for (const student of leaderboard.dojo.students) {
+    for (const student of leaderboard!.dojo.students) {
       const checkIns = student.checkIns.length;
       const videos = student.videos.length;
       
