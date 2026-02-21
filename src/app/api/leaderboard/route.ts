@@ -1,7 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient, Leaderboard } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+
+// Type for leaderboard with entries included
+type LeaderboardWithEntries = Awaited<ReturnType<typeof prisma.leaderboard.findFirst<{
+  include: {
+    entries: {
+      include: {
+        student: {
+          select: {
+            id: true;
+            name: true;
+            beltRank: true;
+          };
+        };
+      };
+    };
+  };
+}>>>;
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,7 +36,7 @@ export async function GET(request: NextRequest) {
     // Get current or specified month's leaderboard
     const targetMonth = month || new Date().toISOString().slice(0, 7);
 
-    let leaderboard: Leaderboard | null = await prisma.leaderboard.findFirst({
+    let leaderboard: LeaderboardWithEntries = await prisma.leaderboard.findFirst({
       where: {
         dojoId,
         month: targetMonth,
