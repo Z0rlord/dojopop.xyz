@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
-    "build": "next build --webpack",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "db:seed": "tsx prisma/seed.ts"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "@crossmint/client-sdk-react-ui": "^2.6.17",
