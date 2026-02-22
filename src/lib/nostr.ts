@@ -1,4 +1,6 @@
-import { generatePrivateKey, getPublicKey, nip04, SimplePool } from "nostr-tools";
+import * as nostr from "nostr-tools";
+
+const { generatePrivateKey, getPublicKey, nip04, SimplePool } = nostr as any;
 
 const RELAYS = [
   "wss://relay.damus.io",
