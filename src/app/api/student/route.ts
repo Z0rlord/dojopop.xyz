@@ -94,9 +94,8 @@ export async function POST(request: NextRequest) {
                 {
                   filename: "dojo-pop-qr.png",
                   content: qrCodeBase64,
-                  encoding: "base64",
-                  cid: "qrcode",
-                },
+                  contentType: "image/png",
+                } as any,
               ]
             : undefined,
         });
