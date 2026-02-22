@@ -135,7 +135,7 @@ export default function SignupPage() {
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
               placeholder="Jan Kowalski"
             />
           </div>
@@ -150,7 +150,7 @@ export default function SignupPage() {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
               placeholder="jan@example.com"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -168,7 +168,7 @@ export default function SignupPage() {
               onChange={(e) =>
                 setFormData({ ...formData, phone: e.target.value })
               }
-              className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-gray-900 text-white rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
               placeholder="+48 123 456 789"
             />
           </div>
