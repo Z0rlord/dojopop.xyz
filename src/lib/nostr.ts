@@ -11,13 +11,19 @@ const RELAYS = [
 // Generate or load Nostr key for a user
 export function getNostrKey(userId: string): { privateKey: string; publicKey: string } {
   const storageKey = `nostr_key_${userId}`;
-  let privateKey: string | null = localStorage.getItem(storageKey);
-
-  if (!privateKey) {
-    privateKey = generatePrivateKey();
-    localStorage.setItem(storageKey, privateKey);
+  const storedKey = localStorage.getItem(storageKey);
+  
+  if (storedKey) {
+    return {
+      privateKey: storedKey,
+      publicKey: getPublicKey(storedKey),
+    };
   }
-
+  
+  // Generate new key
+  const privateKey = generatePrivateKey();
+  localStorage.setItem(storageKey, privateKey);
+  
   return {
     privateKey,
     publicKey: getPublicKey(privateKey),
