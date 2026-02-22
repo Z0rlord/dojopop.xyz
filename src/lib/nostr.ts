@@ -88,7 +88,7 @@ export function subscribeToDMs(
     },
   ]);
   
-  sub.on("event", async (event) => {
+  sub.on("event", async (event: any) => {
     try {
       // Decrypt
       const decrypted = await nip04.decrypt(userPrivateKey, event.pubkey, event.content);
