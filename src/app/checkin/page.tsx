@@ -15,12 +15,7 @@ export default function CheckInPage() {
           <p className="text-gray-400 mt-2">Scan student QR code to check in</p>
         </header>
 
-        <QRScanner
-          dojoId={dojoId}
-          onSuccess={(student) => {
-            console.log("Checked in:", student);
-          }}
-        />
+        <QRScanner dojoId={dojoId} />
 
         <div className="mt-8 p-4 bg-gray-900 rounded-lg">
           <h3 className="font-semibold mb-2">Instructions:</h3>
