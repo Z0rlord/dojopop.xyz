@@ -29,7 +29,7 @@ export default function SignupPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          dojoId: "e6416114-d45d-47b3-9572-4418869d7bba",
+          dojoId: "e6416114-d45d-47b3-9572-4418869d7bba", // Warsaw BJJ Academy
         }),
       });
 
@@ -61,38 +61,38 @@ export default function SignupPage() {
 
   if (result?.success && result.qrCode) {
     return (
-      <div className="min-h-screen bg-background p-6 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-950 p-4 flex items-center justify-center">
         <div className="max-w-md w-full text-center space-y-6">
-          <div className="p-6 bg-accent/10 rounded-2xl border border-accent/20">
-            <h2 className="text-2xl font-bold text-accent mb-2">Welcome!</h2>
-            <p className="text-foreground">{result.message}</p>
+          <div className="p-6 bg-green-900/30 rounded-lg border border-green-700">
+            <h2 className="text-2xl font-bold text-green-400 mb-2">✅ Success!</h2>
+            <p className="text-gray-300">{result.message}</p>
             {result.emailSent && (
-              <p className="text-sm text-muted-foreground mt-2">
-                QR code also sent to your email
+              <p className="text-sm text-green-300 mt-2">
+                📧 QR code also sent to your email!
               </p>
             )}
           </div>
 
-          <div className="p-6 bg-surface rounded-2xl shadow-sm">
-            <h3 className="font-semibold text-lg mb-4 text-foreground">{result.studentName}</h3>
-            <div className="bg-background p-4 rounded-xl inline-block">
+          <div className="p-6 bg-gray-900 rounded-lg">
+            <h3 className="font-semibold mb-4">{result.studentName}</h3>
+            <div className="bg-white p-4 rounded-lg inline-block">
               <img
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
                   result.qrCode
-                )}&color=c4705a&bgcolor=f5f0e8`}
+                )}&color=dc2626&bgcolor=1a1a1a`}
                 alt="Your QR Code"
                 className="w-48 h-48"
               />
             </div>
-            <p className="text-sm text-muted-foreground mt-4">
+            <p className="text-sm text-gray-500 mt-4">
               Save this QR code! Show it at the dojo to check in.
             </p>
             <a
               href={`https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(
                 result.qrCode
-              )}&color=c4705a&bgcolor=f5f0e8`}
+              )}&color=dc2626&bgcolor=1a1a1a`}
               download="dojo-pop-qr.png"
-              className="inline-block mt-4 px-6 py-2 bg-primary text-primary-foreground hover:bg-primary-hover rounded-lg text-sm font-medium transition"
+              className="inline-block mt-4 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm"
             >
               Download QR Code
             </a>
@@ -100,7 +100,7 @@ export default function SignupPage() {
 
           <button
             onClick={() => router.push("/")}
-            className="w-full py-3 bg-primary hover:bg-primary-hover text-primary-foreground rounded-xl font-medium transition"
+            className="w-full py-3 bg-red-600 hover:bg-red-700 rounded-lg transition"
           >
             Back to Home
           </button>
@@ -110,22 +110,22 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-950 p-4 flex items-center justify-center">
       <div className="max-w-md w-full">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary">Join Dojo Pop</h1>
-          <p className="text-muted-foreground mt-2">Create your student account</p>
+          <h1 className="text-3xl font-bold text-red-500">Join Dojo Pop</h1>
+          <p className="text-gray-400 mt-2">Create your student account</p>
         </header>
 
         {result && !result.success && (
-          <div className="mb-4 p-4 bg-error/10 rounded-xl text-error">
+          <div className="mb-4 p-4 bg-red-900/30 rounded-lg text-red-400">
             {result.message}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-1">
               Full Name *
             </label>
             <input
@@ -135,13 +135,13 @@ export default function SignupPage() {
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-xl border border-surface-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
+              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
               placeholder="Jan Kowalski"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-1">
               Email
             </label>
             <input
@@ -150,16 +150,16 @@ export default function SignupPage() {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-xl border border-surface-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
+              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
               placeholder="jan@example.com"
             />
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-gray-500 mt-1">
               We&apos;ll send your QR code here
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-1">
               Phone
             </label>
             <input
@@ -168,7 +168,7 @@ export default function SignupPage() {
               onChange={(e) =>
                 setFormData({ ...formData, phone: e.target.value })
               }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-xl border border-surface-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
+              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
               placeholder="+48 123 456 789"
             />
           </div>
@@ -176,15 +176,15 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-primary hover:bg-primary-hover disabled:bg-muted text-primary-foreground rounded-xl font-semibold transition shadow-sm"
+            className="w-full py-4 bg-red-600 hover:bg-red-700 disabled:bg-gray-700 rounded-lg font-semibold transition"
           >
             {loading ? "Creating account..." : "Sign Up"}
           </button>
         </form>
 
-        <p className="text-center text-muted-foreground mt-6">
+        <p className="text-center text-gray-500 mt-6">
           Already have an account?{" "}
-          <a href="/" className="text-primary hover:underline font-medium">
+          <a href="/" className="text-red-500 hover:underline">
             Log in
           </a>
         </p>
