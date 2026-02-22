@@ -95,9 +95,6 @@ export default function PaymentsPage() {
             setOrderId(id);
             setPaymentComplete(true);
           }}
-          onError={(err) => {
-            console.error("Payment failed:", err);
-          }}
         />
       </div>
     </div>
