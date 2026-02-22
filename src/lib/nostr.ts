@@ -52,8 +52,9 @@ export async function sendDM(
   };
   
   // Sign and publish
-  const { finalizeEvent } = await import("nostr-tools");
-  const signedEvent = finalizeEvent(event, senderPrivateKey);
+  const { finalizeEvent, hexToBytes } = await import("nostr-tools");
+  const privateKeyBytes = hexToBytes(senderPrivateKey);
+  const signedEvent = finalizeEvent(event, privateKeyBytes);
   
   await Promise.all(pool.publish(RELAYS, signedEvent));
   pool.close(RELAYS);
