@@ -39,11 +39,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-background p-4 flex items-center justify-center">
       <div className="max-w-md w-full">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-red-500">Dojo Pop</h1>
-          <p className="text-gray-400 mt-2">Sign in to your account</p>
+          <h1 className="text-3xl font-bold text-primary">Dojo Pop</h1>
+          <p className="text-foreground mt-2">Sign in to your account</p>
         </header>
 
         <div className="flex gap-4 mb-6">
@@ -51,8 +51,8 @@ export default function LoginPage() {
             onClick={() => setActiveTab("student")}
             className={`flex-1 py-3 rounded-lg transition ${
               activeTab === "student"
-                ? "bg-red-600"
-                : "bg-gray-800 text-gray-400"
+                ? "bg-primary text-primary-foreground"
+                : "bg-surface text-foreground"
             }`}
           >
             Student
@@ -61,8 +61,8 @@ export default function LoginPage() {
             onClick={() => setActiveTab("instructor")}
             className={`flex-1 py-3 rounded-lg transition ${
               activeTab === "instructor"
-                ? "bg-red-600"
-                : "bg-gray-800 text-gray-400"
+                ? "bg-primary text-primary-foreground"
+                : "bg-surface text-foreground"
             }`}
           >
             Instructor
@@ -78,7 +78,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {activeTab === "student" ? (
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 QR Code
               </label>
               <input
@@ -88,17 +88,17 @@ export default function LoginPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, qrCode: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
+                className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
                 placeholder="Scan or enter your QR code"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-foreground mt-1">
                 Find your QR code in your email or ask your instructor
               </p>
             </div>
           ) : (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Email
                 </label>
                 <input
@@ -108,13 +108,13 @@ export default function LoginPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
+                  className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
                   placeholder="instructor@dojopop.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Password
                 </label>
                 <input
@@ -124,7 +124,7 @@ export default function LoginPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
-                  className="w-full px-4 py-3 bg-gray-900 rounded-lg border border-gray-800 focus:border-red-500 focus:outline-none"
+                  className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
                   placeholder="••••••••"
                 />
               </div>
@@ -134,16 +134,16 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-red-600 hover:bg-red-700 disabled:bg-gray-700 rounded-lg font-semibold transition"
+            className="w-full py-4 bg-primary hover:bg-red-700 disabled:bg-surface rounded-lg font-semibold transition text-primary-foreground"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-500">
+          <p className="text-foreground">
             Don&apos;t have an account?{" "}
-            <a href="/signup" className="text-red-500 hover:underline">
+            <a href="/signup" className="text-primary hover:underline">
               Sign up
             </a>
           </p>
