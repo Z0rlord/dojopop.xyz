@@ -2,6 +2,16 @@ import * as nostr from "nostr-tools";
 
 const { generatePrivateKey, getPublicKey, nip04, SimplePool } = nostr as any;
 
+// Helper to convert hex string to Uint8Array
+function hexToBytes(hex: string): Uint8Array {
+  if (hex.startsWith("0x")) hex = hex.slice(2);
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+  }
+  return bytes;
+}
+
 const RELAYS = [
   "wss://relay.damus.io",
   "wss://relay.nostr.band",
@@ -52,7 +62,7 @@ export async function sendDM(
   };
   
   // Sign and publish
-  const { finalizeEvent, hexToBytes } = await import("nostr-tools");
+  const { finalizeEvent } = await import("nostr-tools");
   const privateKeyBytes = hexToBytes(senderPrivateKey);
   const signedEvent = finalizeEvent(event, privateKeyBytes);
   
