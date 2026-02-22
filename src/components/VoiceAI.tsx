@@ -175,7 +175,7 @@ export default function VoiceAI({ studentId, enabled = true }: VoiceAIProps) {
 
       {response && (
         <div className="p-3 bg-red-900/30 border border-red-800 rounded">
-          <p className="text-red-200">{response.response}</p>
+          <p className="text-red-200">{response.text}</p>
         </div>
       )}
 
