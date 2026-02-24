@@ -1,114 +1,216 @@
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Navigation */}
+      <nav className="py-4 px-6 border-b border-surface-border">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold">DP</span>
+            </div>
+            <span className="font-bold text-lg">Dojo Pop</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <a href="/login" className="text-muted-foreground hover:text-foreground transition">Sign In</a>
+            <a 
+              href="/signup" 
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary-hover transition"
+            >
+              Get Started
+            </a>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero */}
-      <section className="py-20 px-4 text-center">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-bold text-primary mb-6">
-            Dojo Pop
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium mb-6">
+            <span>🥋</span>
+            <span>Now in beta — Join 3 schools already using Dojo Pop</span>
+          </div>
+          
+          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+            Your martial arts journey,
+            <span className="text-primary"> digitized</span>
           </h1>
-          <p className="text-2xl md:text-3xl text-muted-foreground mb-4">
-            Your Digital Dojo Passport
+          
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            Replace paper attendance sheets and scattered notes with one beautiful app. 
+            Track every session, celebrate every promotion, and build a permanent record 
+            of your progress from white belt to black belt.
           </p>
-          <p className="text-lg text-muted max-w-2xl mx-auto mb-8">
-            The modern way to track your martial arts journey. Check in with a tap, 
-            earn rewards for every session, and build a permanent record of your progress 
-            from white belt to black belt and beyond.
-          </p>
-          <div className="flex gap-4 justify-center">
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/signup"
-              className="px-8 py-4 bg-primary hover:bg-primary-hover text-primary-foreground rounded-xl font-semibold transition shadow-sm"
+              className="px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary-hover transition shadow-lg shadow-primary/20"
             >
-              Join Now
+              Start Your Free Account
             </a>
             <a
-              href="/login"
-              className="px-8 py-4 bg-surface hover:bg-background border border-surface-border rounded-xl font-semibold transition"
+              href="#how-it-works"
+              className="px-8 py-4 bg-surface text-foreground border border-surface-border rounded-xl font-semibold hover:bg-background transition"
             >
-              Sign In
+              See How It Works
             </a>
           </div>
+          
+          <p className="text-sm text-muted mt-4">No credit card required. Free for students.</p>
         </div>
       </section>
 
-      {/* What is Dojo Pop */}
+      {/* App Preview / Demo */}
       <section className="py-16 px-4 bg-surface">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">What is Dojo Pop?</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Dojo Pop is a digital companion for martial arts schools and students. 
-            We replace paper attendance sheets and scattered spreadsheets with one 
-            beautiful, simple app that tracks everything that matters.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6 text-left">
-            <div className="p-6 bg-background rounded-xl">
-              <div className="text-3xl mb-3">🥋</div>
-              <h3 className="font-semibold mb-2">For Students</h3>
-              <p className="text-sm text-muted-foreground">
-                Track your attendance, see your belt progression, earn DOJO tokens 
-                for consistent training, and connect with your instructors.
-              </p>
-            </div>
-            <div className="p-6 bg-background rounded-xl">
-              <div className="text-3xl mb-3">👨‍🏫</div>
-              <h3 className="font-semibold mb-2">For Instructors</h3>
-              <p className="text-sm text-muted-foreground">
-                Manage classes, track student progress, handle belt promotions, 
-                and communicate with your dojo — all in one place.
-              </p>
-            </div>
-            <div className="p-6 bg-background rounded-xl">
-              <div className="text-3xl mb-3">🏫</div>
-              <h3 className="font-semibold mb-2">For Schools</h3>
-              <p className="text-sm text-muted-foreground">
-                Modernize your operations with QR check-ins, automated attendance 
-                reports, and tools that keep students engaged and coming back.
-              </p>
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-background rounded-2xl p-8 shadow-xl border border-surface-border">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h2 className="text-3xl font-bold mb-4">Check in with a tap</h2>
+                <p className="text-muted-foreground mb-6">
+                  No more paper sign-in sheets. Students scan their personal QR code 
+                  to check in — it takes 2 seconds and works even without internet.
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "Unique QR code for every student",
+                    "NFC tap support on modern phones",
+                    "Offline mode stores check-ins locally",
+                    "Automatic attendance tracking"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3">
+                      <span className="w-5 h-5 bg-accent/20 text-accent rounded-full flex items-center justify-center text-xs">✓</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div className="bg-surface rounded-xl p-6 border border-surface-border">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-xl">👤</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Tom Jones</p>
+                    <p className="text-sm text-muted-foreground">Blue Belt • 3 Stripes</p>
+                  </div>
+                </div>
+                
+                <div className="bg-background rounded-lg p-4 mb-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-muted-foreground">This Month</span>
+                    <span className="font-bold text-accent">12 sessions</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-muted-foreground">Current Streak</span>
+                    <span className="font-bold text-primary">5 days 🔥</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">DOJO Tokens</span>
+                    <span className="font-bold">340 ⭐</span>
+                  </div>
+                </div>
+                
+                <button className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-medium">
+                  Check In Now
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-16 px-4">
+      {/* Features Grid */}
+      <section id="how-it-works" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Features</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything you need to run a modern dojo</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              From attendance tracking to belt promotions, Dojo Pop handles the paperwork 
+              so you can focus on teaching.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: "📱",
+                title: "QR Check-ins",
+                description: "Students scan their unique code. No apps to install, works on any phone."
+              },
+              {
+                icon: "🥋",
+                title: "Belt Tracking",
+                description: "Digital belt progression with stripes, promotions, and history."
+              },
+              {
+                icon: "⭐",
+                title: "DOJO Tokens",
+                description: "Gamified rewards for attendance, streaks, and achievements."
+              },
+              {
+                icon: "📹",
+                title: "Video Library",
+                description: "Upload technique videos. Students earn tokens for sharing knowledge."
+              },
+              {
+                icon: "💬",
+                title: "Direct Messaging",
+                description: "Encrypted chat between instructors and students via Nostr."
+              },
+              {
+                icon: "🏆",
+                title: "Leaderboards",
+                description: "Monthly competitions with token prizes for top performers."
+              }
+            ].map((feature, i) => (
+              <div key={i} className="p-6 bg-surface rounded-xl border border-surface-border hover:border-primary/50 transition">
+                <div className="text-3xl mb-4">{feature.icon}</div>
+                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* For Whom */}
+      <section className="py-16 px-4 bg-surface">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Built for every martial artist</h2>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 bg-surface rounded-xl border border-surface-border">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                </svg>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🧑‍🎓</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">QR Check-in</h3>
+              <h3 className="text-xl font-semibold mb-2">For Students</h3>
               <p className="text-muted-foreground">
-                Quick, contactless check-ins. Students scan their unique QR code to track attendance.
+                Track your journey, earn rewards for consistent training, 
+                and connect with your dojo community.
               </p>
             </div>
-
-            <div className="p-6 bg-surface rounded-xl border border-surface-border">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                </svg>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">👨‍🏫</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Belt Tracking</h3>
+              <h3 className="text-xl font-semibold mb-2">For Instructors</h3>
               <p className="text-muted-foreground">
-                Digital belt rank progression. Track stripes, promotions, and training history.
+                Manage classes, track student progress, handle promotions, 
+                and communicate with your students.
               </p>
             </div>
-
-            <div className="p-6 bg-surface rounded-xl border border-surface-border">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-warning/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🏫</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">DOJO Tokens</h3>
+              <h3 className="text-xl font-semibold mb-2">For School Owners</h3>
               <p className="text-muted-foreground">
-                Earn tokens for training. Redeem for gear, discounts, and exclusive access.
+                Modernize operations, reduce admin work, and keep students 
+                engaged with gamification.
               </p>
             </div>
           </div>
@@ -116,31 +218,73 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-4 bg-primary text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary-foreground">
-            Ready to modernize your dojo?
-          </h2>
-          <p className="text-xl mb-8 text-primary-foreground/90">
-            Join the beta and be among the first to use Dojo Pop.
+      <section className="py-20 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to modernize your dojo?</h2>
+          <p className="text-muted-foreground text-lg mb-8">
+            Join schools already using Dojo Pop to track attendance, 
+            engage students, and grow their community.
           </p>
+          
           <a
             href="/signup"
-            className="px-8 py-4 bg-background text-primary rounded-xl font-semibold hover:bg-surface transition shadow-sm"
+            className="inline-block px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary-hover transition shadow-lg shadow-primary/20"
           >
             Get Started Free
           </a>
+          
+          <p className="text-sm text-muted mt-4">Free for students. Schools pay only for advanced features.</p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 bg-surface text-center">
-        <div className="flex justify-center gap-6 mb-4">
-          <a href="/terms" className="text-muted-foreground hover:text-foreground transition">Terms of Service</a>
-          <a href="/privacy" className="text-muted-foreground hover:text-foreground transition">Privacy Policy</a>
+      <footer className="py-12 px-4 bg-surface border-t border-surface-border">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold">DP</span>
+                </div>
+                <span className="font-bold">Dojo Pop</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                The digital dojo passport for martial arts schools.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Product</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-foreground transition">Features</a></li>
+                <li><a href="#" className="hover:text-foreground transition">Pricing</a></li>
+                <li><a href="#" className="hover:text-foreground transition">Changelog</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="/terms" className="hover:text-foreground transition">Terms of Service</a></li>
+                <li><a href="/privacy" className="hover:text-foreground transition">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-foreground transition">GDPR</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Connect</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-foreground transition">Twitter</a></li>
+                <li><a href="#" className="hover:text-foreground transition">Discord</a></li>
+                <li><a href="#" className="hover:text-foreground transition">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="pt-8 border-t border-surface-border text-center text-sm text-muted-foreground">
+            <p>© 2026 Dojo Pop. Made for martial artists, by martial artists.</p>
+          </div>
         </div>
-        <p className="text-muted-foreground">© 2026 Dojo Pop. All rights reserved.</p>
-        <p className="mt-2 text-sm text-muted">Made for martial artists, by martial artists.</p>
       </footer>
     </div>
   );
