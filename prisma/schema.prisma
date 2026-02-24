@@ -28,7 +28,8 @@ model Student {
   name        String
   email       String?
   phone       String?
-  avatar      String?   // URL to avatar image
+  avatar      String?
+  password    String?   // Hashed password for account login
   beltRank    BeltRank  @default(WHITE)
   stripes     Int       @default(0)
   qrCode      String    @unique
