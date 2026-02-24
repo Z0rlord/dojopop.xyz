@@ -46,9 +46,7 @@ export default function LandingPage() {
       <nav className="border-b-2 border-neutral-900">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-accent flex items-center justify-center">
-              <span className="text-accent-foreground font-black text-sm">DP</span>
-            </div>
+            <img src="/logo.jpg" alt="Dojo Pop" className="w-10 h-10 object-cover" />
             <span className="font-heading font-black text-xl tracking-tight">DOJO POP</span>
           </div>
           <div className="flex items-center gap-6">
@@ -237,9 +235,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-accent flex items-center justify-center">
-                  <span className="text-accent-foreground font-black text-sm">DP</span>
-                </div>
+                <img src="/logo.jpg" alt="Dojo Pop" className="w-8 h-8 object-cover" />
                 <span className="font-heading font-black text-xl">DOJO POP</span>
               </div>
               <p className="text-sm text-neutral-400">Official practice record.</p>
