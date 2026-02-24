@@ -45,26 +45,36 @@ export async function POST(request: NextRequest) {
       const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
 
       try {
-        await resend.emails.send({
-          from: "Dojo Pop <onboarding@resend.dev>",
+        console.log("Attempting to send reset email to:", email);
+        console.log("Using from address: noreply@app.the47.xyz");
+        
+        const { data, error } = await resend.emails.send({
+          from: "Dojo Pop <noreply@app.the47.xyz>",
           to: email,
           subject: "Reset your Dojo Pop password",
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-              <h1 style="color: #c4705a;">Reset Your Password</h1>
+              <h1 style="color: #D7262E;">Reset Your Password</h1>
               <p>Hi ${student.name},</p>
               <p>You requested a password reset for your Dojo Pop account.</p>
               <p>Click the link below to reset your password:</p>
-              <a href="${resetUrl}" style="display: inline-block; padding: 12px 24px; background: #c4705a; color: white; text-decoration: none; border-radius: 8px;">Reset Password</a>
+              <a href="${resetUrl}" style="display: inline-block; padding: 12px 24px; background: #D7262E; color: white; text-decoration: none;">Reset Password</a>
               <p style="color: #666; font-size: 14px; margin-top: 24px;">This link expires in 1 hour.</p>
               <p style="color: #666; font-size: 14px;">If you didn't request this, you can safely ignore this email.</p>
             </div>
           `,
         });
-        console.log("Reset email sent to:", email);
+        
+        if (error) {
+          console.error("Resend API error:", JSON.stringify(error, null, 2));
+        } else {
+          console.log("Reset email sent successfully. Message ID:", data?.id);
+        }
       } catch (emailErr) {
-        console.error("Reset email error:", emailErr);
+        console.error("Reset email exception:", emailErr);
       }
+    } else {
+      console.log("RESEND_API_KEY not set, skipping email");
     }
 
     return NextResponse.json({
