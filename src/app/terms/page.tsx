@@ -1,18 +1,18 @@
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gray-950 text-white py-12 px-4">
+    <div className="min-h-screen bg-background text-foreground py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold text-red-500 mb-4">Terms of Service</h1>
-        <p className="text-gray-500 mb-8">Last Updated: February 20, 2026</p>
+        <h1 className="text-4xl font-bold text-primary mb-4">Terms of Service</h1>
+        <p className="text-muted-foreground mb-8">Last Updated: February 20, 2026</p>
 
-        <div className="space-y-8 text-gray-300">
+        <div className="space-y-8 text-foreground/80">
           <section>
-            <h2 className="text-xl font-semibold text-white mb-2">1. Acceptance of Terms</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-2">1. Acceptance of Terms</h2>
             <p>By accessing or using Dojo Pop (&quot;the Service&quot;), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-white mb-2">2. Description of Service</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-2">2. Description of Service</h2>
             <p className="mb-2">Dojo Pop is a martial arts school management platform that provides:</p>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li>Student attendance tracking via QR code and NFC</li>
