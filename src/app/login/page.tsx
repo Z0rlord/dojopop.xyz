@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [userType, setUserType] = useState<"student" | "instructor">("student");
+  const [activeTab, setActiveTab] = useState<"student" | "instructor">("student");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -22,7 +22,6 @@ export default function LoginPage() {
     const result = await signIn("credentials", {
       email: formData.email,
       password: formData.password,
-      userType,
       redirect: false,
     });
 
@@ -30,36 +29,35 @@ export default function LoginPage() {
       setError("Invalid email or password");
       setLoading(false);
     } else {
-      router.push(userType === "student" ? "/student" : "/instructor");
+      router.push(activeTab === "student" ? "/student" : "/instructor");
     }
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 flex items-center justify-center">
+    <div className="min-h-screen bg-background p-4 flex items-center justify-center">
       <div className="max-w-md w-full">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary">Welcome Back</h1>
-          <p className="text-muted-foreground mt-2">Sign in to your Dojo Pop account</p>
+          <h1 className="text-3xl font-bold text-primary">Dojo Pop</h1>
+          <p className="text-foreground mt-2">Sign in to your account</p>
         </header>
 
-        {/* User Type Toggle */}
-        <div className="flex gap-2 p-1 bg-surface rounded-xl mb-6">
+        <div className="flex gap-4 mb-6">
           <button
-            onClick={() => setUserType("student")}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium transition ${
-              userType === "student"
+            onClick={() => setActiveTab("student")}
+            className={`flex-1 py-3 rounded-lg transition ${
+              activeTab === "student"
                 ? "bg-primary text-primary-foreground"
-                : "text-foreground hover:bg-background"
+                : "bg-surface text-foreground"
             }`}
           >
             Student
           </button>
           <button
-            onClick={() => setUserType("instructor")}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium transition ${
-              userType === "instructor"
+            onClick={() => setActiveTab("instructor")}
+            className={`flex-1 py-3 rounded-lg transition ${
+              activeTab === "instructor"
                 ? "bg-primary text-primary-foreground"
-                : "text-foreground hover:bg-background"
+                : "bg-surface text-foreground"
             }`}
           >
             Instructor
@@ -67,7 +65,7 @@ export default function LoginPage() {
         </div>
 
         {error && (
-          <div className="mb-4 p-4 bg-error/10 rounded-xl text-error text-sm">
+          <div className="mb-4 p-4 bg-error/10 rounded-lg text-error">
             {error}
           </div>
         )}
@@ -84,8 +82,8 @@ export default function LoginPage() {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-xl border border-surface-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
-              placeholder={userType === "student" ? "your@email.com" : "instructor@dojo.com"}
+              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
+              placeholder="your@email.com"
             />
           </div>
 
@@ -100,16 +98,12 @@ export default function LoginPage() {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-xl border border-surface-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
+              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
               placeholder="••••••••"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 text-sm text-muted-foreground">
-              <input type="checkbox" className="rounded border-surface-border" />
-              Remember me
-            </label>
+          <div className="text-right">
             <a href="/forgot-password" className="text-sm text-primary hover:underline">
               Forgot password?
             </a>
@@ -118,25 +112,26 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-primary hover:bg-primary-hover disabled:bg-muted text-primary-foreground rounded-xl font-semibold transition shadow-sm"
+            className="w-full py-4 bg-primary hover:bg-primary-hover disabled:bg-surface rounded-lg font-semibold transition text-primary-foreground"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <div className="mt-6 text-center space-y-2">
-          <p className="text-muted-foreground">
+        <div className="mt-6 text-center">
+          <p className="text-foreground">
             Don&apos;t have an account?{" "}
-            <a href="/signup" className="text-primary hover:underline font-medium">
+            <a href="/signup" className="text-primary hover:underline">
               Sign up
             </a>
           </p>
-          
-          {userType === "student" && (
-            <p className="text-xs text-muted">
-              💡 Use your QR code to check in at class, not to log in
-            </p>
-          )}
+        </div>
+
+        <div className="mt-8 p-4 bg-surface rounded-lg border border-surface-border">
+          <p className="text-sm text-muted-foreground text-center">
+            <strong>💡 Tip:</strong> Use your QR code to check in at class, 
+            not to log into your account.
+          </p>
         </div>
       </div>
     </div>
