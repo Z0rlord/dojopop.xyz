@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
 import QRCode from "qrcode";
 import { Resend } from "resend";
 
@@ -31,7 +32,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, phone, dojoId, language } = await request.json();
+    const { name, email, phone, password, dojoId, language } = await request.json();
 
     if (!name || !dojoId) {
       return NextResponse.json(
@@ -56,11 +57,18 @@ export async function POST(request: NextRequest) {
 
     const qrCode = crypto.randomUUID();
 
+    // Hash password if provided
+    let hashedPassword = null;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
     const student = await prisma.student.create({
       data: {
         name,
         email: email || null,
         phone: phone || null,
+        password: hashedPassword,
         language: language || "en",
         dojoId,
         qrCode,
@@ -74,8 +82,8 @@ export async function POST(request: NextRequest) {
         width: 400,
         margin: 2,
         color: {
-          dark: "#dc2626",
-          light: "#1a1a1a",
+          dark: "#0B0B0C",
+          light: "#F7F7F5",
         },
       });
     } catch (err) {
@@ -88,19 +96,19 @@ export async function POST(request: NextRequest) {
         const qrCodeBase64 = qrCodeDataUrl?.split(",")[1];
         
         await resend.emails.send({
-          from: "Dojo Pop <onboarding@resend.dev>",
+          from: "Dojo Pop <noreply@app.the47.xyz>",
           to: email,
-          subject: "Welcome to Dojo Pop - Your QR Code",
+          subject: "Your Dojo Pop Account",
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-              <h1 style="color: #dc2626;">Welcome to Dojo Pop! 🥋</h1>
+              <h1 style="color: #D7262E;">Welcome to Dojo Pop</h1>
               <p>Hi ${name},</p>
-              <p>You're all set up. Your QR code is attached — save it to your phone and show it at the dojo to check in.</p>
+              <p>Your account has been created. Your QR code is attached — use it to check in at class.</p>
               <p><strong>Your QR Code:</strong></p>
               <img src="cid:qrcode" alt="Your QR Code" style="max-width: 300px;" />
               <hr style="border: none; border-top: 1px solid #ccc; margin: 20px 0;" />
               <p style="color: #666; font-size: 14px;">
-                Keep this email safe. If you lose your QR code, ask your instructor for help.
+                Sign in at app.the47.xyz/login with your email and password.
               </p>
             </div>
           `,
@@ -117,7 +125,6 @@ export async function POST(request: NextRequest) {
         console.log("Email sent to:", email);
       } catch (emailErr) {
         console.error("Email send error:", emailErr);
-        // Don't fail the signup if email fails
       }
     }
 
@@ -126,6 +133,7 @@ export async function POST(request: NextRequest) {
       student: {
         id: student.id,
         name: student.name,
+        email: student.email,
         qrCode: student.qrCode,
         emailSent: !!(email && process.env.RESEND_API_KEY),
       },

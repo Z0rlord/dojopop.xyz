@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import QRCode from "qrcode";
 
 const LANGUAGES = [
   { code: "en", label: "English" },
@@ -11,32 +12,54 @@ const LANGUAGES = [
 ];
 
 export default function SignupPage() {
+  const [step, setStep] = useState<"form" | "success">("form");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    password: "",
+    confirmPassword: "",
     language: "en",
   });
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{
-    success: boolean;
-    message: string;
-    qrCode?: string;
-    studentName?: string;
-    emailSent?: boolean;
-    isDuplicate?: boolean;
+  const [error, setError] = useState("");
+  const [createdStudent, setCreatedStudent] = useState<{
+    id: string;
+    name: string;
+    email: string;
+    qrCode: string;
+    emailSent: boolean;
   } | null>(null);
+  const [qrImage, setQrImage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formData,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+          language: formData.language,
           dojoId: "e6416114-d45d-47b3-9572-4418869d7bba",
         }),
       });
@@ -44,54 +67,98 @@ export default function SignupPage() {
       const data = await response.json();
 
       if (response.ok) {
-        setResult({
-          success: true,
-          message: "Record created. Your QR code is ready.",
-          qrCode: data.student.qrCode,
-          studentName: data.student.name,
-          emailSent: data.student.emailSent,
+        setCreatedStudent(data.student);
+        
+        // Generate QR code image
+        const qrDataUrl = await QRCode.toDataURL(data.student.qrCode, {
+          width: 400,
+          margin: 2,
+          color: {
+            dark: "#0B0B0C",
+            light: "#F7F7F5",
+          },
         });
+        setQrImage(qrDataUrl);
+        
+        setStep("success");
+      } else if (response.status === 409) {
+        setError("An account with this email already exists. Please sign in.");
       } else {
-        const isDuplicate = response.status === 409;
-        setResult({
-          success: false,
-          message: data.error || "Failed to create record",
-          isDuplicate,
-        });
+        setError(data.error || "Failed to create account");
       }
-    } catch (error) {
-      setResult({
-        success: false,
-        message: "Network error",
-      });
+    } catch (err) {
+      setError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  if (result?.success && result.qrCode) {
+  if (step === "success" && createdStudent && qrImage) {
     return (
-      <div className="min-h-screen bg-background p-6 flex items-center justify-center">
-        <div className="max-w-md w-full border-2 border-neutral-900 p-8">
-          <div className="border-l-4 border-accent pl-4 mb-6">
-            <h2 className="font-heading text-2xl font-black">RECORD CREATED</h2>
-          </div>
+      <div className="min-h-screen bg-background p-6">
+        <div className="max-w-lg mx-auto">
+          <header className="mb-8">
+            <Link href="/" className="font-heading font-black text-xl">← DOJO POP</Link>
+          </header>
 
-          <div className="border-2 border-neutral-900 p-4 mb-6">
-            <p className="font-heading font-bold">{result.studentName}</p>
-            <div className="mt-4 bg-neutral-100 aspect-square flex items-center justify-center">
-              <span className="text-neutral-400 text-sm">QR: {result.qrCode.slice(0, 8)}...</span>
+          <div className="border-2 border-neutral-900 p-8">
+            <div className="border-l-4 border-accent pl-4 mb-6">
+              <h2 className="font-heading text-2xl font-black">ACCOUNT CREATED</h2>
+            </div>
+
+            <div className="space-y-6">
+              {/* QR Code */}
+              <div className="border-2 border-neutral-900 p-4">
+                <p className="text-xs uppercase tracking-[0.2em] font-semibold mb-4">Your Check-In QR Code</p>
+                <img 
+                  src={qrImage} 
+                  alt="Your QR Code" 
+                  className="w-full max-w-[300px] mx-auto"
+                />
+                <a
+                  href={qrImage}
+                  download={`dojo-pop-qr-${createdStudent.name.replace(/\s+/g, '-').toLowerCase()}.png`}
+                  className="block w-full text-center mt-4 uppercase tracking-[0.2em] text-xs font-bold px-4 py-3 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
+                >
+                  Download QR Code
+                </a>
+              </div>
+
+              {/* Account Details */}
+              <div className="border-2 border-neutral-900 p-4 bg-surface">
+                <p className="text-xs uppercase tracking-[0.2em] font-semibold mb-2">Account Details</p>
+                <p className="font-bold">{createdStudent.name}</p>
+                <p className="text-neutral-500">{createdStudent.email}</p>
+              </div>
+
+              {/* Important Info */}
+              <div className="space-y-4 text-sm">
+                <div className="border-l-4 border-accent pl-4">
+                  <p className="font-bold mb-1">Save Your QR Code</p>
+                  <p>Screenshot or download this QR code. You'll use it to check in at class.</p>
+                </div>
+
+                <div className="border-l-4 border-neutral-900 pl-4">
+                  <p className="font-bold mb-1">Sign In With Email</p>
+                  <p>Use your email and password to access your account dashboard.</p>
+                </div>
+
+                {createdStudent.emailSent && (
+                  <div className="border-l-4 border-neutral-900 pl-4">
+                    <p className="font-bold mb-1">Check Your Email</p>
+                    <p>We've sent your QR code to {createdStudent.email}</p>
+                  </div>
+                )}
+              </div>
+
+              <Link
+                href="/login"
+                className="block w-full text-center uppercase tracking-[0.2em] text-sm font-bold px-8 py-4 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
+              >
+                Sign In to Dashboard
+              </Link>
             </div>
           </div>
-
-          <p className="text-sm mb-6">Save this QR code. Use it to check in at class.</p>
-
-          <Link
-            href="/"
-            className="block w-full text-center uppercase tracking-[0.2em] text-sm font-bold px-8 py-4 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
-          >
-            Done
-          </Link>
         </div>
       </div>
     );
@@ -106,10 +173,10 @@ export default function SignupPage() {
           <p className="text-neutral-500 mt-2">Create your practice record.</p>
         </header>
 
-        {result && !result.success && (
+        {error && (
           <div className="mb-6 border-l-4 border-accent pl-4 py-2">
-            <p className="font-bold">{result.message}</p>
-            {result.isDuplicate && (
+            <p className="font-bold">{error}</p>
+            {error.includes("already exists") && (
               <div className="mt-2 text-sm">
                 <Link href="/login" className="underline">Sign in</Link>
                 {" / "}
@@ -135,10 +202,11 @@ export default function SignupPage() {
 
           <div>
             <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
-              Email
+              Email *
             </label>
             <input
               type="email"
+              required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
@@ -153,6 +221,34 @@ export default function SignupPage() {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+              Password *
+            </label>
+            <input
+              type="password"
+              required
+              minLength={8}
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+            />
+            <p className="text-xs text-neutral-500 mt-1">Minimum 8 characters</p>
+          </div>
+
+          <div>
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+              Confirm Password *
+            </label>
+            <input
+              type="password"
+              required
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
             />
           </div>
@@ -194,7 +290,7 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full uppercase tracking-[0.2em] text-sm font-bold px-8 py-4 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 disabled:opacity-50 transition-colors"
           >
-            {loading ? "Creating..." : "Create Record"}
+            {loading ? "Creating..." : "Create Account"}
           </button>
         </form>
 
