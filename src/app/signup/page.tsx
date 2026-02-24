@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignupPage() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,24 +38,23 @@ export default function SignupPage() {
       if (response.ok) {
         setResult({
           success: true,
-          message: "Welcome to Dojo Pop! Your QR code is ready.",
+          message: "Record created. Your QR code is ready.",
           qrCode: data.student.qrCode,
           studentName: data.student.name,
           emailSent: data.student.emailSent,
         });
       } else {
-        // Check for duplicate email error
         const isDuplicate = response.status === 409;
         setResult({
           success: false,
-          message: data.error || "Something went wrong",
+          message: data.error || "Failed to create record",
           isDuplicate,
         });
       }
     } catch (error) {
       setResult({
         success: false,
-        message: "Network error. Please try again.",
+        message: "Network error",
       });
     } finally {
       setLoading(false);
@@ -66,48 +64,26 @@ export default function SignupPage() {
   if (result?.success && result.qrCode) {
     return (
       <div className="min-h-screen bg-background p-6 flex items-center justify-center">
-        <div className="max-w-md w-full text-center space-y-6">
-          <div className="p-6 bg-accent/10 rounded-2xl border border-accent/20">
-            <h2 className="text-2xl font-bold text-accent mb-2">Welcome!</h2>
-            <p className="text-foreground">{result.message}</p>
-            {result.emailSent && (
-              <p className="text-sm text-muted-foreground mt-2">
-                QR code also sent to your email
-              </p>
-            )}
+        <div className="max-w-md w-full border-2 border-neutral-900 p-8">
+          <div className="border-l-4 border-accent pl-4 mb-6">
+            <h2 className="font-heading text-2xl font-black">RECORD CREATED</h2>
           </div>
 
-          <div className="p-6 bg-surface rounded-2xl shadow-sm">
-            <h3 className="font-semibold text-lg mb-4 text-foreground">{result.studentName}</h3>
-            <div className="bg-background p-4 rounded-xl inline-block">
-              <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-                  result.qrCode
-                )}&color=c4705a&bgcolor=f5f0e8`}
-                alt="Your QR Code"
-                className="w-48 h-48"
-              />
+          <div className="border-2 border-neutral-900 p-4 mb-6">
+            <p className="font-heading font-bold">{result.studentName}</p>
+            <div className="mt-4 bg-neutral-100 aspect-square flex items-center justify-center">
+              <span className="text-neutral-400 text-sm">QR: {result.qrCode.slice(0, 8)}...</span>
             </div>
-            <p className="text-sm text-muted-foreground mt-4">
-              Save this QR code! Show it at the dojo to check in.
-            </p>
-            <a
-              href={`https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(
-                result.qrCode
-              )}&color=c4705a&bgcolor=f5f0e8`}
-              download="dojo-pop-qr.png"
-              className="inline-block mt-4 px-6 py-2 bg-primary text-primary-foreground hover:bg-primary-hover rounded-lg text-sm font-medium transition"
-            >
-              Download QR Code
-            </a>
           </div>
 
-          <button
-            onClick={() => router.push("/")}
-            className="w-full py-3 bg-primary hover:bg-primary-hover text-primary-foreground rounded-xl font-medium transition"
+          <p className="text-sm mb-6">Save this QR code. Use it to check in at class.</p>
+
+          <Link
+            href="/"
+            className="block w-full text-center uppercase tracking-[0.2em] text-sm font-bold px-8 py-4 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
           >
-            Back to Home
-          </button>
+            Done
+          </Link>
         </div>
       </div>
     );
@@ -116,93 +92,75 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-background p-6 flex items-center justify-center">
       <div className="max-w-md w-full">
-        <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary">Join Dojo Pop</h1>
-          <p className="text-muted-foreground mt-2">Create your student account</p>
+        <header className="mb-8">
+          <Link href="/" className="font-heading font-black text-xl">← DOJO POP</Link>
+          <h1 className="font-heading text-3xl font-black mt-6">JOIN</h1>
+          <p className="text-neutral-500 mt-2">Create your practice record.</p>
         </header>
 
         {result && !result.success && (
-          <div className="mb-4 p-4 bg-error/10 rounded-xl text-error">
-            <p>{result.message}</p>
+          <div className="mb-6 border-l-4 border-accent pl-4 py-2">
+            <p className="font-bold">{result.message}</p>
             {result.isDuplicate && (
-              <p className="mt-2 text-sm">
-                Already have an account?{" "}
-                <a href="/login" className="underline font-medium">
-                  Sign in here
-                </a>
-                {" "}or{" "}
-                <a href="/forgot-password" className="underline font-medium">
-                  reset your password
-                </a>
-              </p>
+              <div className="mt-2 text-sm">
+                <Link href="/login" className="underline">Sign in</Link>
+                {" / "}
+                <Link href="/forgot-password" className="underline">Reset password</Link>
+              </div>
             )}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
               Full Name *
             </label>
             <input
               type="text"
               required
               value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-xl border border-surface-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
-              placeholder="Jan Kowalski"
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
               Email
             </label>
             <input
               type="email"
               value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-xl border border-surface-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
-              placeholder="jan@example.com"
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
             />
-            <p className="text-xs text-muted-foreground mt-1">
-              We&apos;ll send your QR code here
-            </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
               Phone
             </label>
             <input
               type="tel"
               value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-xl border border-surface-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
-              placeholder="+48 123 456 789"
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-primary hover:bg-primary-hover disabled:bg-muted text-primary-foreground rounded-xl font-semibold transition shadow-sm"
+            className="w-full uppercase tracking-[0.2em] text-sm font-bold px-8 py-4 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 disabled:opacity-50 transition-colors"
           >
-            {loading ? "Creating account..." : "Sign Up"}
+            {loading ? "Creating..." : "Create Record"}
           </button>
         </form>
 
-        <p className="text-center text-muted-foreground mt-6">
-          Already have an account?{" "}
-          <a href="/" className="text-primary hover:underline font-medium">
-            Log in
-          </a>
+        <p className="mt-6 text-sm">
+          Have an account?{" "}
+          <Link href="/login" className="underline font-bold">Sign in</Link>
         </p>
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function LoginPage() {
     });
 
     if (result?.error) {
-      setError("Invalid email or password");
+      setError("Invalid credentials");
       setLoading(false);
     } else {
       router.push(activeTab === "student" ? "/student" : "/instructor");
@@ -34,30 +35,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-background p-6 flex items-center justify-center">
       <div className="max-w-md w-full">
-        <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary">Dojo Pop</h1>
-          <p className="text-foreground mt-2">Sign in to your account</p>
+        <header className="mb-8">
+          <Link href="/" className="font-heading font-black text-xl">← DOJO POP</Link>
+          <h1 className="font-heading text-3xl font-black mt-6">SIGN IN</h1>
         </header>
 
-        <div className="flex gap-4 mb-6">
+        <div className="flex gap-0 mb-6 border-2 border-neutral-900">
           <button
             onClick={() => setActiveTab("student")}
-            className={`flex-1 py-3 rounded-lg transition ${
+            className={`flex-1 py-3 uppercase tracking-widest text-sm font-bold transition-colors ${
               activeTab === "student"
-                ? "bg-primary text-primary-foreground"
-                : "bg-surface text-foreground"
+                ? "bg-neutral-950 text-neutral-50"
+                : "bg-transparent text-neutral-950"
             }`}
           >
             Student
           </button>
           <button
             onClick={() => setActiveTab("instructor")}
-            className={`flex-1 py-3 rounded-lg transition ${
+            className={`flex-1 py-3 uppercase tracking-widest text-sm font-bold border-l-2 border-neutral-900 transition-colors ${
               activeTab === "instructor"
-                ? "bg-primary text-primary-foreground"
-                : "bg-surface text-foreground"
+                ? "bg-neutral-950 text-neutral-50"
+                : "bg-transparent text-neutral-950"
             }`}
           >
             Instructor
@@ -65,67 +66,57 @@ export default function LoginPage() {
         </div>
 
         {error && (
-          <div className="mb-4 p-4 bg-error/10 rounded-lg text-error">
-            {error}
+          <div className="mb-6 border-l-4 border-accent pl-4 py-2">
+            <p className="font-bold">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
               Email
             </label>
             <input
               type="email"
               required
               value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
-              placeholder="your@email.com"
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
               Password
             </label>
             <input
               type="password"
               required
               value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              className="w-full px-4 py-3 bg-surface text-surface-foreground rounded-lg border border-surface-border focus:border-primary focus:outline-none"
-              placeholder="••••••••"
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
             />
           </div>
 
           <div className="text-right">
-            <a href="/forgot-password" className="text-sm text-primary hover:underline">
+            <Link href="/forgot-password" className="text-sm underline">
               Forgot password?
-            </a>
+            </Link>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-primary hover:bg-primary-hover disabled:bg-surface rounded-lg font-semibold transition text-primary-foreground"
+            className="w-full uppercase tracking-[0.2em] text-sm font-bold px-8 py-4 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 disabled:opacity-50 transition-colors"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-foreground">
-            Don&apos;t have an account?{" "}
-            <a href="/signup" className="text-primary hover:underline">
-              Sign up
-            </a>
-          </p>
-        </div>
+        <p className="mt-6 text-sm">
+          No account?{" "}
+          <Link href="/signup" className="underline font-bold">Join</Link>
+        </p>
       </div>
     </div>
   );
