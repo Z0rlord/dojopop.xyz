@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, phone, dojoId } = await request.json();
+    const { name, email, phone, dojoId, language } = await request.json();
 
     if (!name || !dojoId) {
       return NextResponse.json(
@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
         name,
         email: email || null,
         phone: phone || null,
+        language: language || "en",
         dojoId,
         qrCode,
       },

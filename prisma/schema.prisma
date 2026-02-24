@@ -30,6 +30,7 @@ model Student {
   phone       String?
   avatar      String?
   password    String?   // Hashed password for account login
+  language    String    @default("en") // en, ja, pl, it
   beltRank    BeltRank  @default(WHITE)
   stripes     Int       @default(0)
   qrCode      String    @unique

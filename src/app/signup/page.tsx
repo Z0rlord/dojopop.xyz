@@ -3,11 +3,19 @@
 import { useState } from "react";
 import Link from "next/link";
 
+const LANGUAGES = [
+  { code: "en", label: "English" },
+  { code: "ja", label: "日本語" },
+  { code: "pl", label: "Polski" },
+  { code: "it", label: "Italiano" },
+];
+
 export default function SignupPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    language: "en",
   });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{
@@ -147,6 +155,38 @@ export default function SignupPage() {
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
             />
+          </div>
+
+          <div>
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-3">
+              Language
+            </label>
+            <div className="grid grid-cols-2 gap-0 border-2 border-neutral-900">
+              {LANGUAGES.map((lang) => (
+                <label
+                  key={lang.code}
+                  className={`flex items-center justify-center px-4 py-3 cursor-pointer transition-colors ${
+                    formData.language === lang.code
+                      ? "bg-neutral-950 text-neutral-50"
+                      : "bg-surface hover:bg-neutral-100"
+                  } ${lang.code !== "en" ? "border-t-2 border-neutral-900" : ""} ${
+                    lang.code === "ja" || lang.code === "it" ? "border-l-2 border-neutral-900" : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="language"
+                    value={lang.code}
+                    checked={formData.language === lang.code}
+                    onChange={(e) =>
+                      setFormData({ ...formData, language: e.target.value })
+                    }
+                    className="sr-only"
+                  />
+                  <span className="text-sm font-semibold">{lang.label}</span>
+                </label>
+              ))}
+            </div>
           </div>
 
           <button
