@@ -16,7 +16,7 @@ export default function StudentDashboard() {
   const studentId = "stu_demo_001";
   const studentName = "Tom Jones";
   const beltRank = "Blue Belt";
-  const stripes = 3;
+  const stripes: number = 3;
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
