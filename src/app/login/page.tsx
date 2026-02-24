@@ -126,13 +126,6 @@ export default function LoginPage() {
             </a>
           </p>
         </div>
-
-        <div className="mt-8 p-4 bg-surface rounded-lg border border-surface-border">
-          <p className="text-sm text-muted-foreground text-center">
-            <strong>💡 Tip:</strong> Use your QR code to check in at class, 
-            not to log into your account.
-          </p>
-        </div>
       </div>
     </div>
   );
