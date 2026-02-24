@@ -81,6 +81,10 @@ export default function LandingPage() {
               </h1>
               
               <p className="text-lg md:text-xl leading-relaxed max-w-md">
+                Proof of Practice for Martial Artists.
+              </p>
+              
+              <p className="text-base text-neutral-600 max-w-sm">
                 A permanent training record for real practitioners.
               </p>
             </div>
