@@ -128,6 +128,12 @@ export default function LoginPage() {
                   placeholder="••••••••"
                 />
               </div>
+
+              <div className="text-right">
+                <a href="/forgot-password" className="text-sm text-primary hover:underline">
+                  Forgot password?
+                </a>
+              </div>
             </>
           )}
 

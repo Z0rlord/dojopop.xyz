@@ -17,6 +17,7 @@ export default function SignupPage() {
     qrCode?: string;
     studentName?: string;
     emailSent?: boolean;
+    isDuplicate?: boolean;
   } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,9 +45,12 @@ export default function SignupPage() {
           emailSent: data.student.emailSent,
         });
       } else {
+        // Check for duplicate email error
+        const isDuplicate = response.status === 409;
         setResult({
           success: false,
           message: data.error || "Something went wrong",
+          isDuplicate,
         });
       }
     } catch (error) {
@@ -119,7 +123,19 @@ export default function SignupPage() {
 
         {result && !result.success && (
           <div className="mb-4 p-4 bg-error/10 rounded-xl text-error">
-            {result.message}
+            <p>{result.message}</p>
+            {result.isDuplicate && (
+              <p className="mt-2 text-sm">
+                Already have an account?{" "}
+                <a href="/login" className="underline font-medium">
+                  Sign in here
+                </a>
+                {" "}or{" "}
+                <a href="/forgot-password" className="underline font-medium">
+                  reset your password
+                </a>
+              </p>
+            )}
           </div>
         )}
 

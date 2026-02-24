@@ -40,6 +40,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check for existing email
+    if (email) {
+      const existingStudent = await prisma.student.findFirst({
+        where: { email: { equals: email, mode: 'insensitive' } },
+      });
+
+      if (existingStudent) {
+        return NextResponse.json(
+          { error: "An account with this email already exists. Please log in or use a different email." },
+          { status: 409 }
+        );
+      }
+    }
+
     const qrCode = crypto.randomUUID();
 
     const student = await prisma.student.create({
