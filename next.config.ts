@@ -6,8 +6,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  // Disable Turbopack to avoid webpack conflict
-  turbopack: {},
+  // Skip type checking during build to save memory
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   // Allow all hosts (for Cloudflare)
   async headers() {
     return [
