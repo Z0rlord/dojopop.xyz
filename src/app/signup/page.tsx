@@ -168,9 +168,9 @@ export default function SignupPage() {
     <div className="min-h-screen bg-background p-6 flex items-center justify-center">
       <div className="max-w-md w-full">
         <header className="mb-8">
-          <Link href="/" className="font-heading font-black text-xl">← DOJO POP</Link>
-          <h1 className="font-heading text-3xl font-black mt-6">JOIN</h1>
-          <p className="text-neutral-500 mt-2">Create your practice record.</p>
+          <Link href="/" className="font-heading font-black text-xl text-foreground">← DOJO POP</Link>
+          <h1 className="font-heading text-3xl font-black mt-6 text-foreground">JOIN</h1>
+          <p className="text-muted-foreground mt-2">Create your practice record.</p>
         </header>
 
         {error && (
@@ -188,7 +188,7 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2 text-foreground">
               Full Name *
             </label>
             <input
@@ -196,12 +196,13 @@ export default function SignupPage() {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none text-foreground"
+              placeholder="Enter your full name"
             />
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2 text-foreground">
               Email *
             </label>
             <input
@@ -209,24 +210,26 @@ export default function SignupPage() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none text-foreground"
+              placeholder="Enter your email"
             />
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2 text-foreground">
               Phone
             </label>
             <input
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none text-foreground"
+              placeholder="Enter your phone number"
             />
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2 text-foreground">
               Password *
             </label>
             <input
@@ -235,13 +238,14 @@ export default function SignupPage() {
               minLength={8}
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none text-foreground"
+              placeholder="Create a password"
             />
-            <p className="text-xs text-neutral-500 mt-1">Minimum 8 characters</p>
+            <p className="text-xs text-muted-foreground mt-1">Minimum 8 characters</p>
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2 text-foreground">
               Confirm Password *
             </label>
             <input
@@ -249,12 +253,13 @@ export default function SignupPage() {
               required
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none text-foreground"
+              placeholder="Confirm your password"
             />
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-3">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-3 text-foreground">
               Language
             </label>
             <div className="grid grid-cols-2 gap-0 border-2 border-neutral-900">
