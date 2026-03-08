@@ -11,6 +11,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     // Student/Parent login with QR code
     CredentialsProvider({
+      id: "qr-code",
       name: "QR Code",
       credentials: {
         qrCode: { label: "QR Code", type: "text" },
@@ -34,8 +35,39 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
+    // Student login with email/password
+    CredentialsProvider({
+      id: "student-login",
+      name: "Student Login",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const student = await prisma.student.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!student || !student.password) return null;
+
+        // Compare bcrypt password
+        const isValid = await bcrypt.compare(credentials.password, student.password);
+        if (!isValid) return null;
+
+        return {
+          id: student.id,
+          name: student.name,
+          email: student.email,
+          role: "student",
+          dojoId: student.dojoId,
+        };
+      },
+    }),
     // Instructor login with email/password
     CredentialsProvider({
+      id: "instructor-login",
       name: "Instructor Login",
       credentials: {
         email: { label: "Email", type: "email" },

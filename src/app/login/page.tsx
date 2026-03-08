@@ -20,7 +20,7 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    const result = await signIn("credentials", {
+    const result = await signIn("student-login", {
       email: formData.email,
       password: formData.password,
       redirect: false,
