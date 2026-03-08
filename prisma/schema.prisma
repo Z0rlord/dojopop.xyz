@@ -68,6 +68,7 @@ model Class {
   instructorId String
   name         String
   schedule     String
+  location     String?
   maxStudents  Int      @default(30)
   createdAt    DateTime @default(now())
 
