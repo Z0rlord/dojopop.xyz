@@ -1,243 +1,278 @@
 "use client";
 
-import { useState } from "react";
-import StudentQR from "@/components/StudentQR";
-import CreateClassForm from "@/components/CreateClassForm";
-import CreateInstructorForm from "@/components/CreateInstructorForm";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
-interface Class {
+interface Student {
   id: string;
   name: string;
-  instructor: { name: string };
-  schedule: string;
-  maxStudents: number;
+  email: string;
+  qrCode: string;
+  beltRank: string;
 }
 
-const mockClasses: Class[] = [
-  { id: "cls_001", name: "Kids BJJ", instructor: { name: "Sensei Mike" }, schedule: "Mon/Wed 16:00", maxStudents: 20 },
-  { id: "cls_002", name: "Adult BJJ", instructor: { name: "Professor Ana" }, schedule: "Mon/Wed 19:00", maxStudents: 30 },
-  { id: "cls_003", name: "Muay Thai", instructor: { name: "Kru Tom" }, schedule: "Tue/Thu 18:00", maxStudents: 25 },
-];
-
-const mockInstructors = [
-  { id: "inst_001", name: "Sensei Mike" },
-  { id: "inst_002", name: "Professor Ana" },
-  { id: "inst_003", name: "Kru Tom" },
-];
-
-const mockStudents = [
-  { id: "stu_001", name: "Jan Kowalski", beltRank: "WHITE", stripes: 2 },
-  { id: "stu_002", name: "Anna Nowak", beltRank: "YELLOW", stripes: 1 },
-  { id: "stu_003", name: "Piotr Wiśniewski", beltRank: "ORANGE", stripes: 0 },
-];
+interface CheckIn {
+  id: string;
+  studentId: string;
+  studentName: string;
+  timestamp: string;
+  method: "ble" | "qr" | "manual";
+  status: "present" | "absent" | "late";
+}
 
 export default function InstructorDashboard() {
-  const [activeTab, setActiveTab] = useState<"students" | "qr" | "classes" | "checkins" | "instructors">("students");
-  const [selectedClass, setSelectedClass] = useState<string>("");
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [showCreateInstructor, setShowCreateInstructor] = useState(false);
+  const { data: session } = useSession();
+  const [students, setStudents] = useState<Student[]>([]);
+  const [todayCheckIns, setTodayCheckIns] = useState<CheckIn[]>([]);
+  const [selectedClass, setSelectedClass] = useState("");
+  const [isBeaconActive, setIsBeaconActive] = useState(false);
+  const [showCorrectionModal, setShowCorrectionModal] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [correctionStatus, setCorrectionStatus] = useState<"present" | "absent" | "late">("present");
 
-  const selectedClassData = mockClasses.find((c) => c.id === selectedClass);
+  useEffect(() => {
+    fetchStudents();
+    fetchTodayCheckIns();
+  }, []);
+
+  const fetchStudents = async () => {
+    const response = await fetch("/api/students");
+    if (response.ok) {
+      const data = await response.json();
+      setStudents(data.students);
+    }
+  };
+
+  const fetchTodayCheckIns = async () => {
+    const response = await fetch("/api/checkin/today");
+    if (response.ok) {
+      const data = await response.json();
+      setTodayCheckIns(data.checkIns);
+    }
+  };
+
+  const toggleBeacon = () => {
+    setIsBeaconActive(!isBeaconActive);
+    // In real implementation, this would start/stop BLE broadcasting
+  };
+
+  const openCorrectionModal = (student: Student) => {
+    setSelectedStudent(student);
+    setCorrectionStatus("present");
+    setShowCorrectionModal(true);
+  };
+
+  const submitCorrection = async () => {
+    if (!selectedStudent) return;
+
+    const response = await fetch("/api/checkin/correct", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        studentId: selectedStudent.id,
+        status: correctionStatus,
+        timestamp: new Date().toISOString(),
+        method: "manual",
+      }),
+    });
+
+    if (response.ok) {
+      setShowCorrectionModal(false);
+      fetchTodayCheckIns();
+    }
+  };
+
+  const generateClassQR = () => {
+    // Generate a unique QR code for this class session
+    const classQR = `class-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return classQR;
+  };
+
+  const presentCount = todayCheckIns.filter((c) => c.status === "present").length;
+  const absentStudents = students.filter(
+    (s) => !todayCheckIns.some((c) => c.studentId === s.id && c.status === "present")
+  );
 
   return (
-    <div className="min-h-screen bg-gray-950 p-4">
-      <div className="max-w-4xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-red-500">Instructor Dashboard</h1>
-          <p className="text-gray-400">Manage classes, students, and check-ins</p>
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-6xl mx-auto">
+        <header className="mb-8 flex items-center justify-between">
+          <div>
+            <Link href="/" className="font-heading font-black text-xl text-foreground">
+              ← DOJO POP
+            </Link>
+            <h1 className="font-heading text-3xl font-black mt-6 text-foreground">INSTRUCTOR DASHBOARD</h1>
+            <p className="text-muted-foreground mt-2">Welcome, {session?.user?.name}</p>
+          </div>
+          <Link
+            href="/"
+            className="text-sm text-muted-foreground underline"
+          >
+            Logout
+          </Link>
         </header>
 
-        <nav className="flex gap-4 mb-6 border-b border-gray-800 pb-4 overflow-x-auto">
-          {(["students", "classes", "instructors", "qr", "checkins"] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => {
-                setActiveTab(tab);
-                setShowCreateForm(false);
-                setShowCreateInstructor(false);
-              }}
-              className={`px-4 py-2 rounded transition capitalize whitespace-nowrap ${
-                activeTab === tab
-                  ? "bg-red-600 text-white"
-                  : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-
-        {activeTab === "students" && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Students</h2>
-              <select
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="px-3 py-2 bg-gray-800 rounded border border-gray-700"
-              >
-                <option value="">All Classes</option>
-                {mockClasses.map((cls) => (
-                  <option key={cls.id} value={cls.id}>
-                    {cls.name} - {cls.instructor.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {mockStudents.map((student) => (
-              <div
-                key={student.id}
-                className="p-4 bg-gray-900 rounded-lg flex justify-between items-center"
-              >
-                <div>
-                  <p className="font-semibold">{student.name}</p>
-                  <p className="text-sm text-gray-400 capitalize">
-                    {student.beltRank.toLowerCase()} belt, {student.stripes} stripes
-                  </p>
-                </div>
-                <button className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm">
-                  Edit
-                </button>
-              </div>
-            ))}
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-6 mb-8">
+          <div className="border-2 border-neutral-900 p-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Present Today</p>
+            <p className="font-heading text-4xl font-black text-foreground">{presentCount}</p>
           </div>
-        )}
+          <div className="border-2 border-neutral-900 p-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Absent</p>
+            <p className="font-heading text-4xl font-black text-accent">{absentStudents.length}</p>
+          </div>
+          <div className="border-2 border-neutral-900 p-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Total Students</p>
+            <p className="font-heading text-4xl font-black text-foreground">{students.length}</p>
+          </div>
+        </div>
 
-        {activeTab === "classes" && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Classes</h2>
+        {/* Check-in Controls */}
+        <div className="border-2 border-neutral-900 p-6 mb-8">
+          <h2 className="font-heading text-xl font-bold text-foreground mb-6">Class Check-In Controls</h2>
+          
+          <div className="grid grid-cols-2 gap-6">
+            {/* BLE Beacon */}
+            <div className="border-2 border-neutral-900 p-6 text-center">
+              <div className="text-4xl mb-4">📡</div>
+              <h3 className="font-bold text-foreground mb-2">Bluetooth Beacon</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                {isBeaconActive
+                  ? "Broadcasting... Students can auto-check in"
+                  : "Start beacon to enable auto check-in"}
+              </p>
               <button
-                onClick={() => setShowCreateForm(!showCreateForm)}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold transition"
+                onClick={toggleBeacon}
+                className={`uppercase tracking-[0.2em] text-xs font-bold px-6 py-3 border-2 transition-colors ${
+                  isBeaconActive
+                    ? "border-accent text-accent hover:bg-accent hover:text-white"
+                    : "border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950"
+                }`}
               >
-                {showCreateForm ? "Cancel" : "+ Create Class"}
+                {isBeaconActive ? "Stop Beacon" : "Start Beacon"}
               </button>
             </div>
 
-            {showCreateForm && (
-              <div className="p-6 bg-gray-900 rounded-lg border border-gray-800">
-                <h3 className="text-lg font-semibold mb-4">Create New Class</h3>
-                <CreateClassForm
-                  instructors={mockInstructors}
-                  dojoId="demo-dojo-id"
-                  onSuccess={() => {
-                    setShowCreateForm(false);
-                    // In production, refresh class list here
-                  }}
-                />
+            {/* QR Code */}
+            <div className="border-2 border-neutral-900 p-6 text-center">
+              <div className="text-4xl mb-4">📷</div>
+              <h3 className="font-bold text-foreground mb-2">Class QR Code</h3>
+              <p className="text-sm text-muted-foreground mb-4">Display for students to scan</p>
+              <div className="bg-white p-4 inline-block mb-4">
+                <div className="w-32 h-32 bg-neutral-200 flex items-center justify-center">
+                  <span className="text-xs text-neutral-400">QR CODE</span>
+                </div>
               </div>
-            )}
+              <button
+                onClick={() => alert(`Class QR: ${generateClassQR()}`)}
+                className="block w-full uppercase tracking-[0.2em] text-xs font-bold px-6 py-3 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
+              >
+                Generate New QR
+              </button>
+            </div>
+          </div>
+        </div>
 
-            <div className="space-y-3">
-              {mockClasses.map((cls) => (
-                <div key={cls.id} className="p-4 bg-gray-900 rounded-lg">
-                  <div className="flex justify-between items-start">
+        {/* Attendance List */}
+        <div className="border-2 border-neutral-900">
+          <div className="p-6 border-b-2 border-neutral-900 flex items-center justify-between">
+            <h2 className="font-heading text-xl font-bold text-foreground">Today's Attendance</h2>
+            <button
+              onClick={fetchTodayCheckIns}
+              className="text-sm text-muted-foreground underline"
+            >
+              Refresh
+            </button>
+          </div>
+
+          <div className="divide-y-2 divide-neutral-900">
+            {students.map((student) => {
+              const checkIn = todayCheckIns.find((c) => c.studentId === student.id);
+              return (
+                <div key={student.id} className="p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-3 h-3 rounded-full ${
+                        checkIn?.status === "present"
+                          ? "bg-green-500"
+                          : checkIn?.status === "late"
+                          ? "bg-yellow-500"
+                          : "bg-red-500"
+                      }`}
+                    />
                     <div>
-                      <p className="font-semibold text-lg">{cls.name}</p>
-                      <p className="text-gray-400">Instructor: {cls.instructor.name}</p>
-                      <p className="text-sm text-gray-500 mt-1">{cls.schedule}</p>
-                      <p className="text-xs text-gray-600 mt-1">
-                        Max {cls.maxStudents} students
+                      <p className="font-bold text-foreground">{student.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {student.beltRank} • {checkIn?.method?.toUpperCase() || "Not checked in"}
                       </p>
                     </div>
-                    <button className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm">
-                      View Check-ins
-                    </button>
                   </div>
+
+                  <button
+                    onClick={() => openCorrectionModal(student)}
+                    className="text-sm underline text-muted-foreground hover:text-foreground"
+                  >
+                    {checkIn ? "Edit" : "Mark Present"}
+                  </button>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        )}
+        </div>
 
-        {activeTab === "instructors" && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Instructors</h2>
-              <button
-                onClick={() => setShowCreateInstructor(!showCreateInstructor)}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold transition"
-              >
-                {showCreateInstructor ? "Cancel" : "+ Add Instructor"}
-              </button>
-            </div>
+        {/* Correction Modal */}
+        {showCorrectionModal && selectedStudent && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50">
+            <div className="bg-background border-2 border-neutral-900 p-8 max-w-md w-full">
+              <h3 className="font-heading text-xl font-bold text-foreground mb-4">
+                Correct Attendance
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                {selectedStudent.name}
+              </p>
 
-            {showCreateInstructor && (
-              <div className="p-6 bg-gray-900 rounded-lg border border-gray-800">
-                <h3 className="text-lg font-semibold mb-4">Add New Instructor</h3>
-                <CreateInstructorForm
-                  dojoId="demo-dojo-id"
-                  onSuccess={() => {
-                    setShowCreateInstructor(false);
-                    // In production, refresh instructor list here
-                  }}
-                />
-              </div>
-            )}
-
-            <div className="space-y-3">
-              {mockInstructors.map((inst) => (
-                <div key={inst.id} className="p-4 bg-gray-900 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-semibold">{inst.name}</p>
-                      <p className="text-sm text-gray-400">Instructor</p>
-                    </div>
-                    <button className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm">
-                      Edit
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === "qr" && (
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Generate QR Codes</h2>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {mockStudents.map((student) => (
-                <StudentQR
-                  key={student.id}
-                  studentId={student.id}
-                  studentName={student.name}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === "checkins" && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Recent Check-ins</h2>
-              <select
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="px-3 py-2 bg-gray-800 rounded border border-gray-700"
-              >
-                <option value="">All Classes</option>
-                {mockClasses.map((cls) => (
-                  <option key={cls.id} value={cls.id}>
-                    {cls.name}
-                  </option>
+              <div className="space-y-3 mb-6">
+                {(["present", "absent", "late"] as const).map((status) => (
+                  <label
+                    key={status}
+                    className={`flex items-center justify-center p-4 border-2 cursor-pointer transition-colors ${
+                      correctionStatus === status
+                        ? "border-accent bg-accent/10"
+                        : "border-neutral-900 hover:bg-surface"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="status"
+                      value={status}
+                      checked={correctionStatus === status}
+                      onChange={(e) => setCorrectionStatus(e.target.value as any)}
+                      className="sr-only"
+                    />
+                    <span className="uppercase tracking-widest font-bold text-foreground">
+                      {status}
+                    </span>
+                  </label>
                 ))}
-              </select>
-            </div>
-
-            {selectedClassData ? (
-              <div className="p-4 bg-gray-900 rounded-lg">
-                <p className="text-gray-400">
-                  Showing check-ins for <strong>{selectedClassData.name}</strong> with{" "}
-                  {selectedClassData.instructor.name}
-                </p>
               </div>
-            ) : (
-              <p className="text-gray-500">Select a class to view check-ins</p>
-            )}
+
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setShowCorrectionModal(false)}
+                  className="flex-1 uppercase tracking-[0.2em] text-xs font-bold px-6 py-3 border-2 border-neutral-900 text-foreground hover:bg-surface transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={submitCorrection}
+                  className="flex-1 uppercase tracking-[0.2em] text-xs font-bold px-6 py-3 border-2 border-neutral-900 bg-neutral-950 text-neutral-50 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
