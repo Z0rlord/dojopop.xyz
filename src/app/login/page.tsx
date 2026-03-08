@@ -38,8 +38,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-background p-6 flex items-center justify-center">
       <div className="max-w-md w-full">
         <header className="mb-8">
-          <Link href="/" className="font-heading font-black text-xl">← DOJO POP</Link>
-          <h1 className="font-heading text-3xl font-black mt-6">SIGN IN</h1>
+          <Link href="/" className="font-heading font-black text-xl text-foreground">← DOJO POP</Link>
+          <h1 className="font-heading text-3xl font-black mt-6 text-foreground">SIGN IN</h1>
         </header>
 
         <div className="flex gap-0 mb-6 border-2 border-neutral-900">
@@ -73,28 +73,30 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2 text-foreground">
               Email
             </label>
             <input
               type="email"
               required
+              placeholder="Enter your email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none text-foreground"
             />
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2">
+            <label className="block text-xs uppercase tracking-[0.2em] font-semibold mb-2 text-foreground">
               Password
             </label>
             <input
               type="password"
               required
+              placeholder="Enter your password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none"
+              className="w-full px-4 py-3 bg-surface border-2 border-neutral-900 focus:border-accent focus:outline-none text-foreground"
             />
           </div>
 

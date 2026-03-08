@@ -98,12 +98,12 @@ export default function SignupPage() {
       <div className="min-h-screen bg-background p-6">
         <div className="max-w-lg mx-auto">
           <header className="mb-8">
-            <Link href="/" className="font-heading font-black text-xl">← DOJO POP</Link>
+            <Link href="/" className="font-heading font-black text-xl text-foreground">← DOJO POP</Link>
           </header>
 
           <div className="border-2 border-neutral-900 p-8">
             <div className="border-l-4 border-accent pl-4 mb-6">
-              <h2 className="font-heading text-2xl font-black">ACCOUNT CREATED</h2>
+              <h2 className="font-heading text-2xl font-black text-foreground">ACCOUNT CREATED</h2>
             </div>
 
             <div className="space-y-6">
